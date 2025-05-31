@@ -4,5 +4,179 @@
     "text": "Která planeta je známá jako 'červená planeta' díky svému zbarvení?",
     "options": ["Venuše", "Mars", "Jupiter", "Merkur"],
     "correctAnswer": "Mars"
+  },
+  {
+    "day": 2,
+    "text": "Kdo napsal slavnou knihu 'Na západní frontě klid'?",
+    "options": ["Erich Maria Remarque", "Franz Kafka", "Thomas Mann", "Hermann Hesse"],
+    "correctAnswer": "Erich Maria Remarque"
+  },
+  {
+    "day": 3,
+    "text": "Jaký chemický prvek má značku 'Au' v periodické tabulce?",
+    "options": ["Stříbro", "Zinek", "Zlato", "Měď"],
+    "correctAnswer": "Zlato"
+  },
+  {
+    "day": 4,
+    "text": "Které město je hlavním městem Austrálie?",
+    "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
+    "correctAnswer": "Canberra"
+  },
+  {
+    "day": 5,
+    "text": "Jaký hudební nástroj je známý jako 'král nástrojů'?",
+    "options": ["Klavír", "Varhany", "Housle", "Trubka"],
+    "correctAnswer": "Varhany"
+  },
+  {
+    "day": 6,
+    "text": "Který vynálezce je spojen s žárovkou?",
+    "options": ["Nikola Tesla", "Thomas Edison", "Alexander Bell", "Guglielmo Marconi"],
+    "correctAnswer": "Thomas Edison"
+  },
+  {
+    "day": 7,
+    "text": "Jaký je největší savec na Zemi?",
+    "options": ["Velryba obrovská", "Slon africký", "Žirafa", "Nosorožec"],
+    "correctAnswer": "Velryba obrovská"
+  },
+  {
+    "day": 8,
+    "text": "Který umělec namaloval 'Hvězdnou noc'?",
+    "options": ["Pablo Picasso", "Vincent van Gogh", "Claude Monet", "Leonardo da Vinci"],
+    "correctAnswer": "Vincent van Gogh"
+  },
+  {
+    "day": 9,
+    "text": "Ve kterém roce došlo k sametové revoluci v Československu?",
+    "options": ["1968", "1977", "1989", "1993"],
+    "correctAnswer": "1989"
+  },
+  {
+    "day": 10,
+    "text": "Jaký je hlavní zdroj energie pro Země?",
+    "options": ["Měsíc", "Slunce", "Větrná energie", "Geotermální energie"],
+    "correctAnswer": "Slunce"
+  },
+  {
+    "day": 11,
+    "text": "Kdo je autorem knihy 'Pán prstenů'?",
+    "options": ["J.K. Rowling", "J.R.R. Tolkien", "C.S. Lewis", "George R.R. Martin"],
+    "correctAnswer": "J.R.R. Tolkien"
+  },
+  {
+    "day": 12,
+    "text": "Jaký je nejtvrdší přírodní minerál na Zemi?",
+    "options": ["Křemen", "Diamant", "Topas", "Safír"],
+    "correctAnswer": "Diamant"
+  },
+  {
+    "day": 13,
+    "text": "Která země je známá jako 'země vycházejícího slunce'?",
+    "options": ["Čína", "Japonsko", "Korejská republika", "Thajsko"],
+    "correctAnswer": "Japonsko"
+  },
+  {
+    "day": 14,
+    "text": "Jaký sport je spojen s termínem 'grandslam'?",
+    "options": ["Fotbal", "Tenis", "Basketbal", "Hokej"],
+    "correctAnswer": "Tenis"
+  },
+  {
+    "day": 15,
+    "text": "Který vědec formuloval teorii relativity?",
+    "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+    "correctAnswer": "Albert Einstein"
+  },
+  {
+    "day": 16,
+    "text": "Jaký je největší oceán na Zemi?",
+    "options": ["Atlantský oceán", "Indický oceán", "Tichý oceán", "Severní ledový oceán"],
+    "correctAnswer": "Tichý oceán"
+  },
+  {
+    "day": 17,
+    "text": "Kdo režíroval film 'Občan Kane'?",
+    "options": ["Alfred Hitchcock", "Orson Welles", "Stanley Kubrick", "Steven Spielberg"],
+    "correctAnswer": "Orson Welles"
+  },
+  {
+    "day": 18,
+    "text": "Jaký je chemický vzorec vody?",
+    "options": ["CO2", "H2O", "O2", "N2"],
+    "correctAnswer": "H2O"
+  },
+  {
+    "day": 19,
+    "text": "Která země hostila první moderní olympijské hry v roce 1896?",
+    "options": ["Francie", "Řecko", "Velká Británie", "USA"],
+    "correctAnswer": "Řecko"
+  },
+  {
+    "day": 20,
+    "text": "Jaký je název největší sopky na světě?",
+    "options": ["Vezuv", "Etna", "Mauna Loa", "Kilimandžáro"],
+    "correctAnswer": "Mauna Loa"
+  },
+  {
+    "day": 21,
+    "text": "Kdo napsal operu 'Carmen'?",
+    "options": ["Giuseppe Verdi", "Georges Bizet", "Wolfgang Amadeus Mozart", "Richard Wagner"],
+    "correctAnswer": "Georges Bizet"
+  },
+  {
+    "day": 22,
+    "text": "Jaký je nejběžnější plyn v zemské atmosféře?",
+    "options": ["Kyslík", "Dusík", "Uhlík", "Vodík"],
+    "correctAnswer": "Dusík"
+  },
+  {
+    "day": 23,
+    "text": "Které město je známé jako 'město lásky'?",
+    "options": ["Řím", "Paříž", "Benátky", "Praha"],
+    "correctAnswer": "Paříž"
+  },
+  {
+    "day": 24,
+    "text": "Jaký je název prvního satelitu vypuštěného do vesmíru?",
+    "options": ["Sputnik 1", "Apollo 11", "Voyager 1", "Hubble"],
+    "correctAnswer": "Sputnik 1"
+  },
+  {
+    "day": 25,
+    "text": "Který spisovatel napsal 'Sto roků samoty'?",
+    "options": ["Gabriel García Márquez", "Mario Vargas Llosa", "Julio Cortázar", "Isabel Allende"],
+    "correctAnswer": "Gabriel García Márquez"
+  },
+  {
+    "day": 26,
+    "text": "Jaký je největší kontinent na Zemi?",
+    "options": ["Afrika", "Asie", "Austrálie", "Evropa"],
+    "correctAnswer": "Asie"
+  },
+  {
+    "day": 27,
+    "text": "Který hudební styl je spojen s městem New Orleans?",
+    "options": ["Jazz", "Blues", "Rock", "Country"],
+    "correctAnswer": "Jazz"
+  },
+  {
+    "day": 28,
+    "text": "Kdo objevil penicilin?",
+    "options": ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Jonas Salk"],
+    "correctAnswer": "Alexander Fleming"
+  },
+  {
+    "day": 29,
+    "text": "Jaký je název nejdelší řeky na světě?",
+    "options": ["Amazonka", "Nil", "Jang-c'-ťiang", "Mississippi"],
+    "correctAnswer": "Amazonka"
+  },
+  {
+    "day": 30,
+    "text": "Který herec ztvárnil Jamese Bonda ve filmu 'Goldfinger'?",
+    "options": ["Sean Connery", "Roger Moore", "Pierce Brosnan", "Daniel Craig"],
+    "correctAnswer": "Sean Connery"
   }
 ]

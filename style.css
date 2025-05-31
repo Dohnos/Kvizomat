@@ -6,7 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* Zajistí, že body zabere alespoň celou výšku viewportu */
     padding: 20px;
     box-sizing: border-box;
 }
@@ -20,6 +20,7 @@ body {
     width: 95%;
     text-align: center;
     margin-bottom: 30px;
+    flex-grow: 1; /* Umožní containeru růst a vyplnit prostor, pokud je body vyšší */
 }
 
 h1 {
@@ -55,7 +56,8 @@ p#start-message {
     font-size: 1.1em;
 }
 
-#user-setup input[type="text"] {
+#user-setup input[type="text"],
+#user-setup input[type="password"] /* Přidáno pro PIN */ {
     padding: 14px 20px;
     margin-top: 5px;
     border-radius: 10px;
@@ -65,7 +67,8 @@ p#start-message {
     margin-bottom: 15px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-#user-setup input[type="text"]:focus {
+#user-setup input[type="text"]:focus,
+#user-setup input[type="password"]:focus /* Přidáno pro PIN */ {
     border-color: #3498db;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     outline: none;
@@ -279,28 +282,100 @@ p#start-message {
 }
 
 #next-question-timer #timer {
-    font-weight: 700; /* Bold pre čas */
-    font-size: 1.3em;
-    color: #003366; /* Tmavší čas */
-    margin-left: 5px;
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.1em;
 }
 
 footer {
-    margin-top: auto;
-    padding: 20px;
     width: 100%;
-    background-color: #1a2533; /* Tmavšia pätička */
-    color: #a0aec0; /* Svetlejšia sivá pre text v pätičke */
     text-align: center;
-    font-size: 0.9em;
+    padding: 20px 0; /* Upraven padding */
+    margin-top: auto; /* Přitlačí patičku dolů, pokud je flex kontejner (body) vyšší */
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border-top: 4px solid #3498db;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    flex-shrink: 0; /* Zabrání patičce zmenšovat se */
 }
 
 footer p {
-    margin: 0;
-    color: #a0aec0;
+    margin: 8px 0;
+    font-size: 0.95em; /* Trochu menší text */
+    line-height: 1.6;
+}
+
+footer p:first-child {
+    font-weight: 500;
+    font-size: 1em;
 }
 
 /* Utility class pre skrytie */
 .hidden {
     display: none !important;
+}
+
+/* Styly pro tlačítko Změnit účet - přidáno */
+#change-account-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #4a5568; /* Tmavě šedá */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1000; /* Aby bylo tlačítko nad ostatními elementy */
+}
+
+#change-account-btn:hover {
+    background-color: #2d3748; /* Ještě tmavší šedá */
+    transform: translateY(-1px);
+}
+
+#change-account-btn .fa-user-cog {
+    margin-right: 6px;
+}
+
+/* Styly pro motivační sekci - upraveno pro minimalistický design */
+#motivation-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #f8f9fa; /* Velmi světle šedá, téměř bílá */
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #e9ecef; /* Jemný okraj */
+}
+
+#motivation-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: #343a40; /* Tmavě šedá pro nadpis */
+    font-size: 1.5em; /* Mírně menší pro minimalistický vzhled */
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+#motivation-section h2 .fa-bullhorn {
+    margin-right: 10px;
+    color: #007bff; /* Hlavní modrá barva pro ikonu */
+}
+
+#motivation-section p {
+    font-size: 1.05em; /* O něco menší text */
+    color: #495057; /* Středně šedá pro text */
+    line-height: 1.7;
+    margin-bottom: 10px; /* Mezera mezi odstavci */
+}
+
+#motivation-section p:last-child {
+    margin-bottom: 0;
+    font-style: italic;
+    color: #6c757d; /* Světlejší šedá pro doplňující text */
+}
+
+#motivation-section p strong {
+    color: #007bff; /* Modrá pro zvýraznění */
+    font-weight: 600; /* Trochu výraznější */
 } 

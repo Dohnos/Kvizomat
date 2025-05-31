@@ -17,16 +17,18 @@ const db = firebase.database();
 let currentQuestion = null;
 let currentUser = {
     name: localStorage.getItem('quizUsername') || null,
+    pin: localStorage.getItem('quizUserPin') || null, // Přidáno pro PIN
     score: 0,
     id: localStorage.getItem('quizUserId') || null, // ID uživatele pro Realtime Database
     lastAnswerDate: null
 };
-const quizStartDate = new Date('2025-06-01T00:00:00'); // Datum začátku kvízu
+const quizStartDate = new Date('2025-06-01T00:00:00'); // Kvízzačíná 1. června, toto zajistí, že 1.6. je Den 1.
 let allQuestionsFromDB = []; // Zde budou uloženy otázky z DB
 
 // Elementy DOM
 const userSetupDiv = document.getElementById('user-setup');
 const usernameInput = document.getElementById('username');
+const pinInput = document.getElementById('pin'); // Přidáno pro PIN
 const saveUsernameButton = document.getElementById('saveUsername');
 const quizAreaDiv = document.getElementById('quiz-area');
 const leaderboardAreaDiv = document.getElementById('leaderboard-area');
@@ -40,31 +42,86 @@ const dayNumberDisplayEl = document.getElementById('day-number-display');
 const nextQuestionTimerDiv = document.getElementById('next-question-timer');
 const timerEl = document.getElementById('timer');
 const startMessageEl = document.getElementById('start-message'); // Přidáno pro úpravu startovní zprávy
+const changeAccountButton = document.getElementById('change-account-btn'); // Přidáno
+const motivationSection = document.getElementById('motivation-section'); // Přidáno
 
 // --- Funkcie pre prácu s používateľom ---
 saveUsernameButton.addEventListener('click', () => {
     const rawUsername = usernameInput.value.trim();
-    // Nahradíme neplatné znaky pro RTDB klíče, ale zachováme původní pro zobrazení
-    const safeUsernameId = rawUsername.replace(/[.#$[\]]/g, '_');
-    if (rawUsername) {
-        currentUser.name = rawUsername; // Původní jméno pro zobrazení
-        currentUser.id = safeUsernameId; // Bezpečné ID pro databázi
-        localStorage.setItem('quizUsername', currentUser.name);
-        localStorage.setItem('quizUserId', currentUser.id);
-        checkUserInRealtimeDB();
-        userSetupDiv.style.display = 'none';
-        quizAreaDiv.style.display = 'block';
-        leaderboardAreaDiv.style.display = 'block';
-        startMessageEl.style.display = 'none'; // Skryjeme úvodní zprávu po zadání jména
-        listenForLeaderboardUpdates();
-    } else {
+    const pin = pinInput.value.trim();
+
+    if (!rawUsername) {
         alert('Prosím, zadej své jméno.');
+        return;
     }
+    if (!pin || !/^\d{4}$/.test(pin)) {
+        alert('Prosím, zadej platný čtyřmístný PIN.');
+        return;
+    }
+
+    // Nahradíme neplatné znaky pro RTDB klíče, ale zachováme původní pro zobrazení
+    const safeUsernameId = rawUsername.replace(/[.#$[\]]/g, '_') + '_' + pin; // Přidání PINu k ID pro jednoduchou unikátnost/ověření
+
+    currentUser.name = rawUsername; // Původní jméno pro zobrazení
+    currentUser.pin = pin; // Uložení PINu
+    currentUser.id = safeUsernameId; // Bezpečné ID pro databázi (kombinace jména a PINu)
+
+    localStorage.setItem('quizUsername', currentUser.name);
+    localStorage.setItem('quizUserPin', currentUser.pin); // Uložení PINu do localStorage
+    localStorage.setItem('quizUserId', currentUser.id);
+
+    checkUserInRealtimeDB(); // Tato funkce nyní může ověřit i PIN nebo vytvořit uživatele s ním
+    userSetupDiv.style.display = 'none';
+    motivationSection.style.display = 'block'; // Zobrazíme motivační sekci
+    quizAreaDiv.style.display = 'block';
+    leaderboardAreaDiv.style.display = 'block';
+    changeAccountButton.style.display = 'block'; // Zobrazíme tlačítko pro změnu účtu
+    startMessageEl.style.display = 'none'; // Skryjeme úvodní zprávu po zadání jména
+    listenForLeaderboardUpdates();
+});
+
+changeAccountButton.addEventListener('click', () => {
+    // Vymazání dat z localStorage
+    localStorage.removeItem('quizUsername');
+    localStorage.removeItem('quizUserPin');
+    localStorage.removeItem('quizUserId');
+    localStorage.removeItem('quizUserLastAnswerDate');
+
+    // Reset currentUser objektu
+    currentUser = {
+        name: null,
+        pin: null,
+        score: 0,
+        id: null,
+        lastAnswerDate: null
+    };
+
+    // Reset UI
+    usernameInput.value = '';
+    pinInput.value = '';
+    userSetupDiv.style.display = 'block';
+    quizAreaDiv.style.display = 'none';
+    leaderboardAreaDiv.style.display = 'none';
+    motivationSection.style.display = 'none'; // Skryjeme motivační sekci
+    changeAccountButton.style.display = 'none';
+    feedbackEl.style.display = 'none';
+    nextQuestionTimerDiv.style.display = 'none';
+    startMessageEl.innerHTML = 'Kvíz začíná 31. května 2025!'; // Reset startovní zprávy
+    startMessageEl.style.display = 'block';
+    
+    // Zastavení poslouchání změn v tabulce (pokud je aktivní)
+    if (currentUser.id && db) { // Kontrola, zda db existuje
+        db.ref('users').off('value', listenForLeaderboardUpdates);
+    }
+     // Možná bude potřeba znovu inicializovat některé části, pokud uživatel ihned zadá nové jméno
+    // Například, pokud by se leaderboard nenačítal automaticky po přihlášení.
+    // V našem případě checkUserInRealtimeDB a loadTodaysQuestion by měly být volány po novém přihlášení.
+    console.log("Účet změněn, uživatel odhlášen.");
 });
 
 async function checkUserInRealtimeDB() {
-    if (!currentUser.id) {
-        loadTodaysQuestion(); // Pokud není ID, načteme otázku (zobrazí se info o startu kvízu)
+    if (!currentUser.id) { // Kontrolujeme currentUser.id, které nyní obsahuje i PIN
+        loadTodaysQuestion();
         return;
     }
 
@@ -72,23 +129,32 @@ async function checkUserInRealtimeDB() {
     userRef.once('value', (snapshot) => {
         const userData = snapshot.val();
         if (userData) {
+            // Pokud uživatel existuje, ověříme, zda uložené jméno odpovídá
+            // (PIN je již součástí currentUser.id, takže toto je spíše doplňková kontrola)
+            if (userData.name !== currentUser.name) {
+                // Toto by se nemělo stát, pokud ID generujeme z jména a PINu,
+                // ale pro robustnost můžeme aktualizovat jméno v DB.
+                userRef.update({ name: currentUser.name });
+                console.warn("Jméno v DB se lišilo, bylo aktualizováno.");
+            }
             currentUser.score = userData.score || 0;
             currentUser.lastAnswerDate = userData.lastAnswerDate ? new Date(userData.lastAnswerDate) : null;
-            // Uložíme datum poslední odpovědi i do localStorage pro rychlejší kontrolu v init
-            if (currentUser.lastAnswerDate) { 
+            if (currentUser.lastAnswerDate) {
                 localStorage.setItem('quizUserLastAnswerDate', currentUser.lastAnswerDate.toISOString());
             }
             console.log('Uživatel nalezen v RTDB:', currentUser);
         } else {
+            // Uživatel s tímto ID (jméno + PIN) neexistuje, vytvoříme ho
             userRef.set({
-                name: currentUser.name,
+                name: currentUser.name, // Ukládáme původní jméno
                 score: 0,
                 lastAnswerDate: null
+                // PIN se neukládá přímo do DB jako samostatné pole, je součástí klíče (currentUser.id)
             }).then(() => {
                 console.log('Nový uživatel vytvořen v RTDB:', currentUser);
             }).catch(error => console.error("Chyba při vytváření uživatele v RTDB: ", error));
         }
-        loadTodaysQuestion(); // Načteme dnešní otázku po kontrole/vytvoření uživatele
+        loadTodaysQuestion();
     });
 }
 
@@ -138,11 +204,18 @@ function loadTodaysQuestion() {
         nextQuestionTimerDiv.style.display = 'none';
         startMessageEl.innerHTML = `Kvíz začíná ${quizStartDate.toLocaleDateString('cs-CZ', {day: 'numeric', month: 'long', year: 'numeric'})}! <i class="fas fa-rocket"></i>`;
         startMessageEl.style.display = 'block';
+        changeAccountButton.style.display = currentUser.id ? 'block' : 'none'; // Zobrazit/skrýt dle stavu přihlášení
+        motivationSection.style.display = 'none'; // Skrýt, pokud kvíz nezačal
         return;
     }
-    // Pokud je uživatel přihlášen (má ID), skryjeme startMessageEl, protože kvíz už běží
-    if(currentUser.id) { 
-        startMessageEl.style.display = 'none'; 
+    // Pokud je uživatel přihlášen (má ID), skryjeme startMessageEl a zobrazíme motivaci
+    if(currentUser.id) {
+        startMessageEl.style.display = 'none';
+        motivationSection.style.display = 'block'; // Zobrazit motivaci
+        changeAccountButton.style.display = 'block';
+    } else {
+        motivationSection.style.display = 'none'; // Skrýt, pokud není přihlášen
+        changeAccountButton.style.display = 'none';
     }
 
     if (allQuestionsFromDB.length === 0 && today >= quizStartDate) {
@@ -313,36 +386,44 @@ function listenForLeaderboardUpdates() {
 
 // --- Inicializácia ---
 async function init() {
-    await fetchQuestionsFromDB(); // Nejprve načteme všechny otázky z DB
-    const storedUsername = localStorage.getItem('quizUsername');
-    const storedUserId = localStorage.getItem('quizUserId');
+    console.log("Inicializace aplikace...");
+    // Načtení jména, ID a PINu z localStorage, pokud existují
+    currentUser.name = localStorage.getItem('quizUsername');
+    currentUser.pin = localStorage.getItem('quizUserPin');
+    currentUser.id = localStorage.getItem('quizUserId');
     const storedLastAnswerDate = localStorage.getItem('quizUserLastAnswerDate');
+    if (storedLastAnswerDate) {
+        currentUser.lastAnswerDate = new Date(storedLastAnswerDate);
+    }
 
-    if (storedUsername && storedUserId) {
-        currentUser.name = storedUsername;
-        currentUser.id = storedUserId;
-        if (storedLastAnswerDate) { // Načtení data poslední odpovědi z localStorage
-            currentUser.lastAnswerDate = new Date(storedLastAnswerDate);
-        }
-        usernameInput.value = currentUser.name;
+    if (currentUser.id && currentUser.pin) { // Pokud máme ID a PIN, zkusíme uživatele rovnou "přihlásit"
+        console.log("Nalezen uložený uživatel:", currentUser.name, "s ID:", currentUser.id);
+        usernameInput.value = currentUser.name; // Předvyplníme jméno
+        pinInput.value = currentUser.pin; // Předvyplníme PIN
+
         userSetupDiv.style.display = 'none';
         quizAreaDiv.style.display = 'block';
         leaderboardAreaDiv.style.display = 'block';
+        motivationSection.style.display = 'block'; // Zobrazíme motivační sekci
+        changeAccountButton.style.display = 'block';
         startMessageEl.style.display = 'none';
-        // Nyní zavoláme checkUserInRealtimeDB, která ověří/aktualizuje data v DB a poté zavolá loadTodaysQuestion
-        checkUserInRealtimeDB(); 
+
+        // Musíme načíst otázky a stav uživatele z DB
+        await fetchQuestionsFromDB(); // Počkáme na načtení otázek
+        checkUserInRealtimeDB(); // Tato funkce načte i loadTodaysQuestion
         listenForLeaderboardUpdates();
     } else {
+        // Žádný uložený uživatel nebo chybí PIN, zobrazíme setup
+        console.log("Žádný uložený uživatel nebo chybí PIN, zobrazeno nastavení.");
         userSetupDiv.style.display = 'block';
         quizAreaDiv.style.display = 'none';
         leaderboardAreaDiv.style.display = 'none';
-        loadTodaysQuestion(); // Zavoláme pro zobrazení info, že kvíz ještě nezačal / nebo chybí otázky
-    }
-
-    // Zobrazenie informácie o štarte kvízu, ak ešte nezačal
-    const today = new Date();
-    if (today < quizStartDate && !currentUser.name) { // Zobrazí sa len ak užívateľ nie je prihlásený
-         loadTodaysQuestion(); // Zobrazí zprávu, že kvíz ještě nezačal
+        motivationSection.style.display = 'none';
+        changeAccountButton.style.display = 'none';
+        startMessageEl.innerHTML = `Kvíz začíná ${quizStartDate.toLocaleDateString('cs-CZ', {day: 'numeric', month: 'long', year: 'numeric'})}! <i class="fas fa-rocket"></i>`;
+        startMessageEl.style.display = 'block';
+        await fetchQuestionsFromDB(); // I tak načteme otázky, aby byly připravené
+        loadTodaysQuestion(); // Zobrazí info o startu kvízu, pokud ještě nezačal
     }
 }
 

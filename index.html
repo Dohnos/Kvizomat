@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Denní Kvíz</title>
+    <title>Kvizomat</title>
     <link rel="stylesheet" href="style.css">
     <!-- Přidání Google Fonts a Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,15 +12,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <button id="change-account-btn" style="position: absolute; top: 20px; right: 20px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em;"><i class="fas fa-user-cog"></i> Změnit účet</button>
     <div class="container">
-        <h1><i class="fas fa-brain"></i> Denní Kvíz</h1>
-        <p id="start-message">Kvíz začíná 31. května 2025!</p>
+        <h1><i class="fas fa-brain"></i>Kvizomat</h1>
+        <p id="start-message">Kvíz bude fungovat celý červen!</p>
+
+        <div id="motivation-section">
+            <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
+            <p>V červnu soutěžíme o <strong>200 Kč - LOS!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
+        </div>
 
         <div id="user-setup">
             <h2>Vítej! 👋</h2>
             <label for="username">Zadej své jméno pro tabulku:</label>
             <input type="text" id="username" placeholder="Tvoje jméno">
-            <button id="saveUsername"><i class="fas fa-save"></i> Uložit jméno</button>
+            <label for="pin" style="margin-top: 10px;">Zadej svůj PIN (4 číslice):</label>
+            <input type="password" id="pin" placeholder="Tvůj PIN" maxlength="4" pattern="\d{4}">
+            <button id="saveUsername"><i class="fas fa-save"></i> Uložit a pokračovat</button>
         </div>
 
         <div id="quiz-area" style="display: none;">
@@ -55,10 +63,6 @@
             </table>
         </div>
     </div>
-
-    <footer>
-        <p>Kvizomat - rodinný kvíz pro všechny zapojené uživatele</p>
-    </footer>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
