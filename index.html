@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denní Kvíz</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Přidání Google Fonts a Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-brain"></i> Denní Kvíz</h1>
+        <p id="start-message">Kvíz začíná 31. května 2025!</p>
+
+        <div id="user-setup">
+            <h2>Vítej! 👋</h2>
+            <label for="username">Zadej své jméno pro tabulku:</label>
+            <input type="text" id="username" placeholder="Tvoje jméno">
+            <button id="saveUsername"><i class="fas fa-save"></i> Uložit jméno</button>
+        </div>
+
+        <div id="quiz-area" style="display: none;">
+            <h2 id="current-date"></h2>
+            <p id="day-number-display"></p>
+            <div id="question-container">
+                <p id="question-text"></p>
+                <div id="options-container">
+                    <!-- Možnosti se načtou sem -->
+                </div>
+                <button id="submit-answer"><i class="fas fa-paper-plane"></i> Odeslat odpověď</button>
+            </div>
+            <div id="feedback" style="display: none;"></div>
+            <div id="next-question-timer" style="display: none;">
+                <p><i class="fas fa-hourglass-half"></i> Další otázka bude dostupná za: <span id="timer"></span></p>
+            </div>
+        </div>
+
+        <div id="leaderboard-area" style="display: none;">
+            <h2><i class="fas fa-trophy"></i> Tabulka výsledků</h2>
+            <table id="leaderboard">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Jméno</th>
+                        <th>Skóre <i class="fas fa-star"></i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data se načtou sem -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>Kvizomat - rodinný kvíz pro všechny zapojené uživatele</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script> -->
+
+
+    <script src="script.js"></script>
+</body>
+</html> 

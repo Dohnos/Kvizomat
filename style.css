@@ -1,0 +1,306 @@
+body {
+    font-family: 'Roboto', sans-serif; /* Nové písmo */
+    margin: 0;
+    background-color: #f0f2f5; /* Jemne odlišné pozadie */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 35px 50px; /* Trochu viac paddingu */
+    border-radius: 16px; /* Ešte viac zaoblené rohy */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Jemnejší, ale výraznejší tieň */
+    max-width: 750px;
+    width: 95%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif; /* Písmo pre hlavný nadpis */
+    color: #1a2533; /* Tmavšia, sýtejšia modrá */
+    font-size: 2.8em;
+    margin-bottom: 15px;
+}
+h1 .fa-brain {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif; /* Písmo aj pre H2 */
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+p#start-message {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+#user-setup label {
+    display: block;
+    margin-bottom: 10px;
+    color: #4a5568; /* Trochu tmavšia pre lepší kontrast */
+    font-weight: 500; /* Medium váha písma */
+    font-size: 1.1em;
+}
+
+#user-setup input[type="text"] {
+    padding: 14px 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e0; /* Svetlejší okraj */
+    font-size: 1em;
+    width: calc(100% - 42px);
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+#user-setup input[type="text"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    outline: none;
+}
+
+#user-setup button,
+#submit-answer {
+    background: linear-gradient(135deg, #3498db, #2980b9); /* Gradient pre tlačidlá */
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-weight: 500; /* Medium váha */
+    padding: 14px 25px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#user-setup button:hover,
+#submit-answer:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+#user-setup button .fa-save, #submit-answer .fa-paper-plane {
+    margin-right: 8px;
+}
+
+#quiz-area, #leaderboard-area {
+    margin-top: 35px;
+}
+
+#question-container {
+    margin-top: 25px;
+    padding: 25px;
+    border: 1px solid #e2e8f0; /* Ešte jemnejší okraj */
+    border-radius: 12px;
+    background-color: #f8fafc; /* Veľmi svetlé pozadie pre otázku */
+}
+
+#question-text {
+    font-size: 1.4em;
+    color: #1a2533;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+#question-text .fa-question-circle, #question-text .fa-info-circle, #question-text .fa-exclamation-triangle, #question-text .fa-check-circle {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+
+#options-container button {
+    display: flex; /* Pre zarovnanie ikon a textu, ak by boli pridané */
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    margin: 10px 0;
+    background-color: #e9ecef; /* Svetlejšia pre možnosti */
+    border: 1px solid #ced4da;
+    color: #2c3e50;
+    text-align: left;
+    border-radius: 10px;
+    font-size: 1.05em;
+    transition: all 0.2s ease-in-out;
+}
+
+#options-container button:hover {
+    background-color: #dbe1e5;
+    border-color: #adb5bd;
+    transform: translateX(5px);
+}
+
+#options-container button.selected {
+    background-color: #aed6f1; /* Jemnejšia modrá pre vybranú */
+    border-color: #3498db;
+    color: #1a5276;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+#options-container button.correct {
+    background-color: #d1e7dd; /* Jemná zelená */
+    color: #0f5132;
+    border-color: #badbcc;
+    font-weight: 500;
+}
+#options-container button.correct::after {
+    content: ' ✔️'; /* Smajlík pre správnu odpoveď */
+}
+
+
+#options-container button.incorrect {
+    background-color: #f8d7da; /* Jemná červená */
+    color: #58151c;
+    border-color: #f1aeb5;
+    font-weight: 500;
+}
+#options-container button.incorrect::after {
+    content: ' ❌'; /* Smajlík pre nesprávnu odpoveď */
+}
+
+.feedback-message { /* Spoločný štýl pre feedback */
+    margin-top: 25px;
+    padding: 18px 25px;
+    border-radius: 10px;
+    font-size: 1.15em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.feedback-message .fas {
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.feedback-message.correct {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+.feedback-message.incorrect {
+    background-color: #f8d7da;
+    color: #58151c;
+    border: 1px solid #f1aeb5;
+}
+
+#leaderboard {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+#leaderboard th {
+    background-color: #34495e;
+    color: white;
+    font-weight: 500; /* Montserrat by tu tiež vyzeral dobre, ale Roboto je OK */
+    padding: 15px 18px;
+    font-size: 1.1em;
+}
+#leaderboard th .fa-star {
+    margin-left: 5px;
+}
+
+#leaderboard th:first-child {
+    border-top-left-radius: 10px;
+}
+#leaderboard th:last-child {
+    border-top-right-radius: 10px;
+}
+
+#leaderboard td {
+    background-color: #fdfdfd;
+    padding: 15px 18px;
+    border-bottom: 1px solid #f0f2f5; /* Jemná linka pod každým riadkom */
+}
+
+#leaderboard tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+#leaderboard tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom: none; /* Posledný riadok nemá spodnú linku */
+}
+
+#leaderboard tr td:first-child {
+    font-weight: bold;
+    color: #3498db;
+}
+
+#leaderboard tr:hover td {
+    background-color: #e9f2fa;
+}
+
+#current-date {
+    font-size: 1em; /* Zmenšené, lebo je menej dôležité */
+    color: #718096; /* Sivá */
+    margin-bottom: 5px;
+}
+#current-date .far.fa-calendar-alt {
+    margin-right: 8px;
+}
+
+#day-number-display {
+    font-size: 0.9em;
+    color: #a0aec0; /* Svetlejšia sivá */
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+#next-question-timer {
+    margin-top: 25px;
+    padding: 18px 25px;
+    background-color: #e6f4ff; /* Svetlejšia modrá pre timer */
+    border: 1px solid #b3d7ff;
+    border-radius: 10px;
+    color: #004a99;
+}
+
+#next-question-timer p {
+    margin: 0;
+    font-size: 1.05em;
+    color: #004a99;
+}
+#next-question-timer p .fas {
+    margin-right: 8px;
+}
+
+#next-question-timer #timer {
+    font-weight: 700; /* Bold pre čas */
+    font-size: 1.3em;
+    color: #003366; /* Tmavší čas */
+    margin-left: 5px;
+}
+
+footer {
+    margin-top: auto;
+    padding: 20px;
+    width: 100%;
+    background-color: #1a2533; /* Tmavšia pätička */
+    color: #a0aec0; /* Svetlejšia sivá pre text v pätičke */
+    text-align: center;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin: 0;
+    color: #a0aec0;
+}
+
+/* Utility class pre skrytie */
+.hidden {
+    display: none !important;
+} 
