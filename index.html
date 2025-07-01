@@ -9,17 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
-    <button id="change-account-btn" style="position: absolute; top: 20px; right: 20px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em;"><i class="fas fa-user-cog"></i> Změnit účet</button>
+    <button id="change-account-btn" style="display: none;"><i class="fas fa-user-cog"></i> Změnit účet</button>
     <div class="container">
         <h1><i class="fas fa-brain"></i>Kvizomat</h1>
-        <p id="start-message">Kvíz bude fungovat celý červen!</p>
+        <p id="start-message">Kvíz bude fungovat celý červenec!</p>
 
-        <div id="motivation-section">
+        <div id="motivation-section" style="display: none;">
             <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
-            <p>V červnu soutěžíme o <strong>200 Kč - LOS!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
+            <p>V červenci soutěžíme o <strong>dárkový poukaz na 300 Kč!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
         </div>
 
         <div id="user-setup">
@@ -34,6 +34,18 @@
         <div id="quiz-area" style="display: none;">
             <h2 id="current-date"></h2>
             <p id="day-number-display"></p>
+            
+            <div id="quiz-info-bar" style="display: none;">
+                <!-- Vylepšený časovač s progress barem -->
+                <div id="timer-container">
+                    <div id="timer-progress-bar"></div>
+                    <span id="question-timer-text">20</span>
+                </div>
+                <div id="streak-display">
+                    <i class="fas fa-fire"></i> Série: <span id="current-streak">0</span>
+                </div>
+            </div>
+
             <div id="question-container">
                 <p id="question-text"></p>
                 <div id="options-container">
@@ -48,7 +60,7 @@
         </div>
 
         <div id="leaderboard-area" style="display: none;">
-            <h2><i class="fas fa-trophy"></i> Tabulka výsledků</h2>
+            <h2><i class="fas fa-trophy"></i> Tabulka výsledků (Červenec 2025)</h2>
             <table id="leaderboard">
                 <thead>
                     <tr>
@@ -57,9 +69,26 @@
                         <th>Skóre <i class="fas fa-star"></i></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Data se načtou sem -->
-                </tbody>
+                <tbody></tbody>
+            </table>
+            
+            <div id="admin-controls" style="display: none;">
+                <button id="archive-winner-btn" class="admin-button-archive"><i class="fas fa-archive"></i> Archivovat vítěze</button>
+                <button id="reset-leaderboard-btn" class="admin-button-reset"><i class="fas fa-trash-alt"></i> Resetovat tabulku</button>
+            </div>
+        </div>
+
+        <div id="hall-of-fame-area" style="display: none;">
+            <h2><i class="fas fa-landmark-dome"></i> Síň slávy</h2>
+            <table id="hall-of-fame-table">
+                <thead>
+                    <tr>
+                        <th>Měsíc 🗓️</th>
+                        <th>Vítěz 👑</th>
+                        <th>Skóre 🌟</th>
+                    </tr>
+                </thead>
+                <tbody id="hall-of-fame-body"></tbody>
             </table>
         </div>
     </div>
@@ -67,9 +96,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script> -->
-
-
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
