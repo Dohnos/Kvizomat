@@ -13,19 +13,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Globální proměnné
+// ... (všechny globální proměnné a elementy DOM zůstávají stejné)
 let currentQuestion = null;
-let currentUser = {
-    name: null, pin: null, id: null,
-    score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null,
-};
+let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, };
 const quizStartDate = new Date('2025-07-01T00:00:00');
 let allQuestionsFromDB = [];
 const QUESTION_TIME_LIMIT = 20;
 let questionTimerInterval = null;
-
-// Elementy DOM
-// ... (všechny stávající elementy)
 const userSetupDiv = document.getElementById('user-setup');
 const usernameInput = document.getElementById('username');
 const pinInput = document.getElementById('pin');
@@ -54,7 +48,6 @@ const timerProgressBar = document.getElementById('timer-progress-bar');
 const questionTimerText = document.getElementById('question-timer-text');
 const streakDisplay = document.getElementById('streak-display');
 const currentStreakEl = document.getElementById('current-streak');
-// Nové elementy pro modal
 const archiveModal = document.getElementById('archive-modal');
 const closeModalBtn = document.querySelector('.close-btn');
 const cancelArchiveBtn = document.getElementById('cancel-archive-btn');
@@ -62,14 +55,13 @@ const confirmArchiveBtn = document.getElementById('confirm-archive-btn');
 const winnerSelect = document.getElementById('winner-select');
 const archiveMonthInput = document.getElementById('archive-month-input');
 
-// ... (logika pro přihlášení, časovač, otázky atd. zůstává stejná)
+// ... (logika pro uživatele a administraci zůstává stejná)
 // --- Logika pro uživatele ---
 saveUsernameButton.addEventListener('click', () => processUserLogin(true));
 changeAccountButton.addEventListener('click', () => {
     localStorage.clear();
     resetUIForLogout();
 });
-
 function resetUIForLogout() {
     currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null };
     quizAreaDiv.style.display = 'none';
@@ -83,7 +75,6 @@ function resetUIForLogout() {
     usernameInput.value = '';
     pinInput.value = '';
 }
-
 async function processUserLogin(isNewLogin = false) {
     if (isNewLogin) {
         const rawUsername = usernameInput.value.trim();
@@ -96,9 +87,7 @@ async function processUserLogin(isNewLogin = false) {
         currentUser.pin = pin;
         currentUser.id = rawUsername.replace(/[.#$[\]]/g, '_') + '_' + pin;
     }
-    
     if (!currentUser.id) { userSetupDiv.style.display = 'block'; return; }
-    
     try {
         const allUsersSnapshot = await db.ref('users').once('value');
         let isDuplicate = false;
@@ -110,17 +99,14 @@ async function processUserLogin(isNewLogin = false) {
                 }
             });
         }
-
         if (isDuplicate) {
             alert('Uživatelské jméno již existuje. Zvolte prosím jiné.');
             resetUIForLogout();
             return;
         }
-
         localStorage.setItem('quizUsername', currentUser.name);
         localStorage.setItem('quizUserPin', currentUser.pin);
         localStorage.setItem('quizUserId', currentUser.id);
-
         const userRef = db.ref('users/' + currentUser.id);
         const snapshot = await userRef.once('value');
         if (snapshot.exists()) {
@@ -132,7 +118,6 @@ async function processUserLogin(isNewLogin = false) {
         } else {
              await userRef.set({ name: currentUser.name, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null });
         }
-
         userSetupDiv.style.display = 'none';
         motivationSection.style.display = 'block';
         quizAreaDiv.style.display = 'block';
@@ -140,14 +125,11 @@ async function processUserLogin(isNewLogin = false) {
         hallOfFameArea.style.display = 'block';
         changeAccountButton.style.display = 'block';
         startMessageEl.style.display = 'none';
-
         if (currentUser.name === 'Kuba') { adminControlsDiv.style.display = 'flex'; }
-
         listenForLeaderboardUpdates();
         loadHallOfFame();
         loadTodaysQuestion();
         updateStreakDisplay();
-
     } catch (error) {
         console.error("Chyba při zpracování uživatele: ", error);
         alert("Chyba při komunikaci s databází. Zkuste to prosím znovu.");
@@ -161,9 +143,7 @@ async function updateUser(updates) {
         console.error("Chyba při aktualizaci dat uživatele:", error);
     }
 }
-
 // --- Administrace a Síň slávy ---
-// Event Listenery pro modal
 archiveWinnerBtn.addEventListener('click', openArchiveModal);
 closeModalBtn.addEventListener('click', () => archiveModal.style.display = 'none');
 cancelArchiveBtn.addEventListener('click', () => archiveModal.style.display = 'none');
@@ -173,14 +153,11 @@ window.addEventListener('click', (event) => {
         archiveModal.style.display = 'none';
     }
 });
-
-// Získá jméno předchozího měsíce pro předvyplnění
 function getPreviousMonthYear() {
     const date = new Date();
     date.setMonth(date.getMonth() - 1);
     return date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' });
 }
-
 async function openArchiveModal() {
     try {
         const snapshot = await db.ref('users').orderByChild('score').once('value');
@@ -188,38 +165,31 @@ async function openArchiveModal() {
             alert("V tabulce nejsou žádní hráči k archivaci.");
             return;
         }
-
         let users = [];
         snapshot.forEach(child => {
             users.push({ id: child.key, ...child.val() });
         });
-        users.reverse(); // Seřadit od nejvyššího skóre
-
-        winnerSelect.innerHTML = '<option value="">-- Vyber hráče --</option>'; // Výchozí prázdná možnost
+        users.reverse();
+        winnerSelect.innerHTML = '<option value="">-- Vyber hráče --</option>';
         users.forEach(user => {
             const option = document.createElement('option');
             option.value = user.id;
             option.textContent = `${user.name} (${user.score} bodů)`;
-            // Uložíme si data přímo na option element pro snadný přístup
             option.dataset.name = user.name;
             option.dataset.score = user.score;
             winnerSelect.appendChild(option);
         });
-
         archiveMonthInput.value = getPreviousMonthYear();
         archiveModal.style.display = 'flex';
-
     } catch (error) {
         console.error("Chyba při načítání hráčů pro archivaci:", error);
         alert("Nepodařilo se načíst hráče.");
     }
 }
-
 async function confirmArchive() {
     const selectedOption = winnerSelect.options[winnerSelect.selectedIndex];
     const winnerId = selectedOption.value;
     const monthYear = archiveMonthInput.value.trim();
-
     if (!winnerId) {
         alert("Prosím, vyberte hráče ze seznamu.");
         return;
@@ -228,17 +198,12 @@ async function confirmArchive() {
         alert("Prosím, zadejte měsíc a rok výhry.");
         return;
     }
-
     const winnerName = selectedOption.dataset.name;
     const winnerScore = selectedOption.dataset.score;
-
     const newEntry = {
-        month: monthYear,
-        name: winnerName,
-        score: parseInt(winnerScore, 10),
+        month: monthYear, name: winnerName, score: parseInt(winnerScore, 10),
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-
     try {
         await db.ref('hallOfFame').push(newEntry);
         alert(`Vítěz ${winnerName} s ${winnerScore} body byl úspěšně archivován pro ${monthYear}.`);
@@ -248,7 +213,6 @@ async function confirmArchive() {
         alert("Archivace se nezdařila.");
     }
 }
-
 async function resetLeaderboard() {
     if (!confirm("Opravdu resetovat celou tabulku a série všech hráčů? Tato akce je nevratná.")) return;
     try {
@@ -270,7 +234,6 @@ async function resetLeaderboard() {
     }
 }
 if(resetLeaderboardBtn) resetLeaderboardBtn.addEventListener('click', resetLeaderboard);
-
 async function loadHallOfFame() {
     db.ref('hallOfFame').orderByChild('timestamp').on('value', (snapshot) => {
         hallOfFameBody.innerHTML = "";
@@ -278,15 +241,12 @@ async function loadHallOfFame() {
             hallOfFameBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">Síň slávy je zatím prázdná. 🏆</td></tr>`;
             return;
         }
-        
         let winnersData = [];
         snapshot.forEach(child => { winnersData.push(child.val()); });
-
         const winCounts = winnersData.reduce((acc, winner) => {
             acc[winner.name] = (acc[winner.name] || 0) + 1;
             return acc;
         }, {});
-        
         winnersData.reverse().forEach(winner => {
             const wins = winCounts[winner.name] > 1 ? ` (${winCounts[winner.name]}x vítěz)` : '';
             const row = hallOfFameBody.insertRow();
@@ -294,7 +254,6 @@ async function loadHallOfFame() {
         });
     });
 }
-//... zbytek script.js zůstává stejný ...
 // --- Logika pro otázky a časovač ---
 function loadTodaysQuestion() {
     const today = new Date();
@@ -362,6 +321,15 @@ function stopTimer() {
     timerProgressBar.style.width = computedStyle.getPropertyValue('width');
 }
 
+// ZMĚNA: Nová funkce pro zobrazení stavu "Zodpovězeno"
+function showAnsweredStatus() {
+    quizInfoBar.style.display = 'flex';
+    timerProgressBar.style.transition = 'none';
+    timerProgressBar.style.width = '100%';
+    timerProgressBar.style.backgroundColor = 'var(--timer-answered-color)';
+    questionTimerText.textContent = 'ZODPOVĚŽENO';
+}
+
 function handleTimeUp() {
     feedbackEl.innerHTML = `<i class="fas fa-clock"></i> Čas vypršel! Správná odpověď byla: <strong>${currentQuestion.correctAnswer}</strong>`;
     feedbackEl.className = 'feedback-message incorrect';
@@ -375,6 +343,8 @@ function handleTimeUp() {
 
     optionsContainerEl.querySelectorAll('button').forEach(btn => btn.disabled = true);
     submitAnswerButton.style.display = 'none';
+
+    showAnsweredStatus(); // ZMĚNA: Zobrazit stav zodpovězeno
     showNextQuestionTimer();
     updateStreakDisplay();
 }
@@ -429,13 +399,17 @@ function handleSubmitAnswer() {
 
     submitAnswerButton.style.display = 'none';
     feedbackEl.style.display = 'block';
+
+    showAnsweredStatus(); // ZMĚNA: Zobrazit stav zodpovězeno
     showNextQuestionTimer();
     updateStreakDisplay();
 }
+
 function updateStreakDisplay() {
     currentStreakEl.textContent = currentUser.streak;
     streakDisplay.classList.toggle('active', currentUser.streak > 0);
 }
+
 function hasUserAnsweredToday() {
     if (!currentUser.lastAnswerDate) return false;
     const lastAnswerDay = new Date(currentUser.lastAnswerDate);
@@ -449,7 +423,8 @@ function displayAlreadyAnswered() {
     questionTextEl.innerHTML = `<i class="fas fa-check-circle"></i> Dnešní otázku jsi již zodpověděl/a. Uvidíme se zítra!`;
     optionsContainerEl.innerHTML = "";
     submitAnswerButton.style.display = 'none';
-    quizInfoBar.style.display = 'flex';
+
+    showAnsweredStatus(); // ZMĚNA: Zobrazit stav zodpovězeno i při obnovení stránky
     showNextQuestionTimer();
 }
 
@@ -520,4 +495,5 @@ async function init() {
         userSetupDiv.style.display = 'block';
     }
 }
+
 document.addEventListener('DOMContentLoaded', init);
