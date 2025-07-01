@@ -12,10 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
+    <!-- Tlačítko pro změnu účtu, skryté dokud se uživatel nepřihlásí -->
     <button id="change-account-btn" style="display: none;"><i class="fas fa-user-cog"></i> Změnit účet</button>
+    
     <div class="container">
         <h1><i class="fas fa-brain"></i>Kvizomat</h1>
         
+        <!-- ================== Uvítací sekce ================== -->
         <div id="welcome-section">
             <div class="intro-text">
                 <h2>Otestuj své znalosti a vyhraj!</h2>
@@ -49,12 +52,13 @@
             </div>
         </div>
 
-
+        <!-- ================== Sekce motivace ================== -->
         <div id="motivation-section" style="display: none;">
              <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
             <p>V červenci soutěžíme o <strong>dárkový poukaz na 300 Kč!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
         </div>
 
+        <!-- ================== Oblast kvízu ================== -->
         <div id="quiz-area" style="display: none;">
             <div class="quiz-header">
                 <h2 id="current-date"></h2>
@@ -82,6 +86,7 @@
             </div>
         </div>
 
+        <!-- ================== Tabulka výsledků ================== -->
         <div id="leaderboard-area" style="display: none;">
             <h2><i class="fas fa-trophy"></i> Tabulka výsledků</h2>
             <table id="leaderboard">
@@ -97,6 +102,7 @@
             </div>
         </div>
 
+        <!-- ================== Síň slávy ================== -->
         <div id="hall-of-fame-area" style="display: none;">
             <h2><i class="fas fa-landmark-dome"></i> Síň slávy</h2>
             <table id="hall-of-fame-table">
@@ -108,7 +114,7 @@
         </div>
     </div>
 
-    <!-- Modal pro archivaci -->
+    <!-- ================== Modaly (dialogová okna) ================== -->
     <div id="archive-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" data-modal="archive-modal">×</span>
@@ -123,7 +129,6 @@
         </div>
     </div>
 
-    <!-- Modal pro změnu PINu -->
     <div id="pin-reset-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" data-modal="pin-reset-modal">×</span>
