@@ -16,7 +16,6 @@
     <div class="container">
         <h1><i class="fas fa-brain"></i>Kvizomat</h1>
         
-        <!-- Nová úvodní sekce (nahrazuje starý user-setup) -->
         <div id="welcome-section">
             <div class="intro-text">
                 <h2>Otestuj své znalosti a vyhraj!</h2>
@@ -44,12 +43,15 @@
                     <input type="password" id="pin" placeholder="Tvůj 4místný PIN" maxlength="4" pattern="\d{4}">
                 </div>
                 <button id="saveUsername"><i class="fas fa-arrow-right-to-bracket"></i> Uložit a pokračovat</button>
+                <div class="forgot-pin-container">
+                    <a href="#" id="forgot-pin-link">Zapomněl/a jsi PIN?</a>
+                </div>
             </div>
         </div>
 
 
         <div id="motivation-section" style="display: none;">
-            <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
+             <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
             <p>V červenci soutěžíme o <strong>dárkový poukaz na 300 Kč!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
         </div>
 
@@ -84,11 +86,7 @@
             <h2><i class="fas fa-trophy"></i> Tabulka výsledků</h2>
             <table id="leaderboard">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Jméno</th>
-                        <th>Skóre <i class="fas fa-star"></i></th>
-                    </tr>
+                    <tr><th>#</th><th>Jméno</th><th>Skóre <i class="fas fa-star"></i></th></tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -103,21 +101,17 @@
             <h2><i class="fas fa-landmark-dome"></i> Síň slávy</h2>
             <table id="hall-of-fame-table">
                 <thead>
-                    <tr>
-                        <th>Měsíc 🗓️</th>
-                        <th>Vítěz 👑</th>
-                        <th>Skóre 🌟</th>
-                    </tr>
+                    <tr><th>Měsíc 🗓️</th><th>Vítěz 👑</th><th>Skóre 🌟</th></tr>
                 </thead>
                 <tbody id="hall-of-fame-body"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- Modal pro výběr vítěze -->
+    <!-- Modal pro archivaci -->
     <div id="archive-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">×</span>
+            <span class="close-btn" data-modal="archive-modal">×</span>
             <h2>Vybrat vítěze k archivaci</h2>
             <label for="winner-select">Vyber hráče:</label>
             <select id="winner-select"></select>
@@ -125,7 +119,21 @@
             <input type="text" id="archive-month-input" placeholder="např. Červenec 2025">
             <div class="modal-buttons">
                 <button id="confirm-archive-btn" class="modal-button confirm">Archivovat</button>
-                <button id="cancel-archive-btn" class="modal-button cancel">Zrušit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pro změnu PINu -->
+    <div id="pin-reset-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" data-modal="pin-reset-modal">×</span>
+            <h2>Změnit / Zapomenutý PIN</h2>
+            <label for="reset-username">Tvoje jméno:</label>
+            <input type="text" id="reset-username" placeholder="Zadej přesně své jméno">
+            <label for="new-pin">Nový 4místný PIN:</label>
+            <input type="password" id="new-pin" placeholder="Zadej nový PIN" maxlength="4" pattern="\d{4}">
+            <div class="modal-buttons">
+                <button id="confirm-pin-reset-btn" class="modal-button confirm">Změnit PIN</button>
             </div>
         </div>
     </div>
