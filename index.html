@@ -15,25 +15,49 @@
     <button id="change-account-btn" style="display: none;"><i class="fas fa-user-cog"></i> Změnit účet</button>
     <div class="container">
         <h1><i class="fas fa-brain"></i>Kvizomat</h1>
-        <p id="start-message">Kvíz bude fungovat celý červenec!</p>
+        
+        <!-- Nová úvodní sekce (nahrazuje starý user-setup) -->
+        <div id="welcome-section">
+            <div class="intro-text">
+                <h2>Otestuj své znalosti a vyhraj!</h2>
+                <p>Každý den na tebe čeká nová otázka. Sbírej body za správné odpovědi, šplhej žebříčkem a na konci měsíce vyhraj skvělé ceny!</p>
+            </div>
+            
+            <div class="rules">
+                <h3><i class="fas fa-book-open"></i> Jak to funguje?</h3>
+                <ul>
+                    <li><i class="fas fa-calendar-day"></i>Každý den jedna nová otázka.</li>
+                    <li><i class="fas fa-star"></i>Za správnou odpověď získáš bod.</li>
+                    <li><i class="fas fa-fire"></i>Udrž si sérii správných odpovědí.</li>
+                    <li><i class="fas fa-trophy"></i>Sleduj své skóre v tabulce výsledků.</li>
+                </ul>
+            </div>
+
+            <div id="user-setup">
+                <h3>Přihlas se a hraj! 👇</h3>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Tvoje jméno">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="pin" placeholder="Tvůj 4místný PIN" maxlength="4" pattern="\d{4}">
+                </div>
+                <button id="saveUsername"><i class="fas fa-arrow-right-to-bracket"></i> Uložit a pokračovat</button>
+            </div>
+        </div>
+
 
         <div id="motivation-section" style="display: none;">
             <h2><i class="fas fa-bullhorn"></i> Tento měsíc hrajeme o...</h2>
             <p>V červenci soutěžíme o <strong>dárkový poukaz na 300 Kč!</strong> Každá správná odpověď tě přiblíží k výhře!</p>
         </div>
 
-        <div id="user-setup">
-            <h2>Vítej! 👋</h2>
-            <label for="username">Zadej své jméno pro tabulku:</label>
-            <input type="text" id="username" placeholder="Tvoje jméno">
-            <label for="pin" style="margin-top: 10px;">Zadej svůj PIN (4 číslice):</label>
-            <input type="password" id="pin" placeholder="Tvůj PIN" maxlength="4" pattern="\d{4}">
-            <button id="saveUsername"><i class="fas fa-save"></i> Uložit a pokračovat</button>
-        </div>
-
         <div id="quiz-area" style="display: none;">
-            <h2 id="current-date"></h2>
-            <p id="day-number-display"></p>
+            <div class="quiz-header">
+                <h2 id="current-date"></h2>
+                <p id="day-number-display"></p>
+            </div>
             
             <div id="quiz-info-bar" style="display: none;">
                 <div id="timer-container">
@@ -93,7 +117,7 @@
     <!-- Modal pro výběr vítěze -->
     <div id="archive-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h2>Vybrat vítěze k archivaci</h2>
             <label for="winner-select">Vyber hráče:</label>
             <select id="winner-select"></select>
