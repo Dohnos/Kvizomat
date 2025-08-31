@@ -29,6 +29,8 @@ const questionTextEl = document.getElementById('question-text');
 const optionsContainerEl = document.getElementById('options-container');
 const submitAnswerButton = document.getElementById('submit-answer');
 const feedbackEl = document.getElementById('feedback');
+const explainAnswerContainer = document.getElementById('explain-answer-container'); // PŘIDAT TENTO ŘÁDEK
+const explainAnswerBtn = document.getElementById('explain-answer-btn'); // PŘIDAT TENTO ŘÁDEK
 const leaderboardBody = document.getElementById('leaderboard').getElementsByTagName('tbody')[0];
 const currentDateEl = document.getElementById('current-date');
 const dayNumberDisplayEl = document.getElementById('day-number-display');
@@ -201,6 +203,7 @@ function displayQuestion(question) {
     submitAnswerButton.style.display = 'block';
     submitAnswerButton.disabled = true;
     feedbackEl.style.display = 'none';
+    explainAnswerContainer.style.display = 'none'; // PŘIDAT TENTO ŘÁDEK
     nextQuestionTimerDiv.style.display = 'none';
 }
 
@@ -238,6 +241,22 @@ function stopTimer() {
 
 // --- Zpracování odpovědi ---
 submitAnswerButton.addEventListener('click', handleSubmitAnswer);
+explainAnswerBtn.addEventListener('click', handleExplainAnswer); // PŘIDAT TENTO ŘÁDEK
+
+// TUTO CELOU FUNKCI PŘIDAT
+function handleExplainAnswer() {
+    if (!currentQuestion) return; // Pojistka, kdyby otázka nebyla dostupná
+
+    // Sestavení promptu pro Perplexity
+    const prompt = `Vysvětli podrobně a pro laika, proč je odpověď '${currentQuestion.correctAnswer}' správná na otázku: '${currentQuestion.text}'`;
+    
+    // Zakódování promptu pro bezpečné použití v URL
+    const encodedPrompt = encodeURIComponent(prompt);
+    
+    // Sestavení finální URL a její otevření v nové záložce
+    const url = `https://www.perplexity.ai/?q=${encodedPrompt}`;
+    window.open(url, '_blank');
+}
 
 // Zpracuje odpověď odeslanou uživatelem.
 function handleSubmitAnswer() {
@@ -287,6 +306,7 @@ function handleSubmitAnswer() {
 
     submitAnswerButton.style.display = 'none';
     feedbackEl.style.display = 'block';
+    explainAnswerContainer.style.display = 'block'; // PŘIDAT TENTO ŘÁDEK
     showAnsweredStatus();
     showNextQuestionTimer();
     updateStreakDisplay();
@@ -297,6 +317,7 @@ function handleTimeUp() {
     feedbackEl.innerHTML = `<i class="fas fa-clock"></i> Čas vypršel! Správná odpověď byla: <strong>${currentQuestion.correctAnswer}</strong>`;
     feedbackEl.className = 'feedback-message incorrect';
     feedbackEl.style.display = 'block';
+    explainAnswerContainer.style.display = 'block'; // PŘIDAT TENTO ŘÁDEK
     
     const todayISO = new Date().toISOString();
     currentUser.lastAnswerDate = new Date(todayISO);
