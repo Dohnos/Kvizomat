@@ -1,188 +1,343 @@
 [
   {
     "day": 0,
-    "text": "Který slavný český skladatel je autorem cyklu symfonických básní 'Má vlast'?",
-    "options": ["Antonín Dvořák", "Bedřich Smetana", "Leoš Janáček", "Bohuslav Martinů"],
-    "correctAnswer": "Bedřich Smetana"
+    "text": "Který český vynálezce je celosvětově známý díky vynálezu měkkých kontaktních čoček?",
+    "options": [
+      "František Křižík",
+      "Prokop Diviš",
+      "Otto Wichterle",
+      "Josef Ressel"
+    ],
+    "correctAnswer": "Otto Wichterle"
   },
   {
     "day": 1,
-    "text": "Jaká je měna používaná v Japonsku?",
-    "options": ["Won", "Juan", "Jen", "Ringgit"],
-    "correctAnswer": "Jen"
+    "text": "Jak se nazývá jev, kdy dochází k barevným světlům na obloze v polárních oblastech, způsobený interakcí slunečního větru s magnetickým polem Země?",
+    "options": [
+      "Fata morgána",
+      "Polární záře (Aurora)",
+      "Eliášův oheň",
+      "Kulový blesk"
+    ],
+    "correctAnswer": "Polární záře (Aurora)"
   },
   {
     "day": 2,
-    "text": "Ve kterém italském městě se nachází slavné Koloseum?",
-    "options": ["Benátky", "Florencie", "Milán", "Řím"],
-    "correctAnswer": "Řím"
+    "text": "Která země je proslulá jako 'země vycházejícího slunce' a její císař je tradičně považován za potomka bohyně Slunce Amaterasu?",
+    "options": [
+      "Čína",
+      "Jižní Korea",
+      "Thajsko",
+      "Japonsko"
+    ],
+    "correctAnswer": "Japonsko"
   },
   {
     "day": 3,
-    "text": "Kdo je autorem slavné sochy Davida a maleb na stropě Sixtinské kaple?",
-    "options": ["Leonardo da Vinci", "Donatello", "Raffael", "Michelangelo"],
-    "correctAnswer": "Michelangelo"
+    "text": "Kdo je autorem slavné teorie relativity, která zásadně změnila naše chápání prostoru, času a gravitace?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "correctAnswer": "Albert Einstein"
   },
   {
     "day": 4,
-    "text": "Jaký je chemický symbol pro stříbro?",
-    "options": ["Au", "Ag", "Si", "Sr"],
-    "correctAnswer": "Ag"
+    "text": "Ve kterém sportu je cílem dostat puk do soupeřovy branky a tým se skládá z brankáře a pěti hráčů v poli?",
+    "options": [
+      "Florbal",
+      "Pozemní hokej",
+      "Lední hokej",
+      "Bandy hokej"
+    ],
+    "correctAnswer": "Lední hokej"
   },
   {
     "day": 5,
-    "text": "Která země je nejlidnatější na světě?",
-    "options": ["Čína", "Indie", "USA", "Indonésie"],
-    "correctAnswer": "Indie"
+    "text": "Jak se jmenuje nejdelší řeka na světě, která protéká Jižní Amerikou a má největší povodí?",
+    "options": [
+      "Nil",
+      "Amazonka",
+      "Jang-c’-ťiang",
+      "Mississippi"
+    ],
+    "correctAnswer": "Amazonka"
   },
   {
     "day": 6,
-    "text": "Který český král a římský císař založil v roce 1348 v Praze univerzitu?",
-    "options": ["Přemysl Otakar II.", "Václav IV.", "Karel IV.", "Jiří z Poděbrad"],
-    "correctAnswer": "Karel IV."
+    "text": "Který film režiséra Jana Svěráka získal v roce 1997 Oscara za nejlepší cizojazyčný film?",
+    "options": [
+      "Obecná škola",
+      "Tmavomodrý svět",
+      "Kolja",
+      "Vratné lahve"
+    ],
+    "correctAnswer": "Kolja"
   },
   {
     "day": 7,
-    "text": "Jak se nazývá proces, při kterém Měsíc zcela zakryje Slunce?",
-    "options": ["Zatmění Měsíce", "Zatmění Slunce", "Konjunkce", "Tranzit"],
-    "correctAnswer": "Zatmění Slunce"
+    "text": "Jak se nazývá proces přeměny pevné látky přímo na plyn, aniž by prošla kapalnou fází?",
+    "options": [
+      "Sublimace",
+      "Kondenzace",
+      "Tání",
+      "Vypařování"
+    ],
+    "correctAnswer": "Sublimace"
   },
   {
     "day": 8,
-    "text": "Který slavný fyzik formuloval tři zákony pohybu?",
-    "options": ["Albert Einstein", "Galileo Galilei", "Isaac Newton", "Johannes Kepler"],
-    "correctAnswer": "Isaac Newton"
+    "text": "Která legendární postava anglického folklóru údajně brala bohatým a dávala chudým a sídlila v lese Sherwood?",
+    "options": [
+      "Král Artuš",
+      "Robin Hood",
+      "Lancelot",
+      "Beowulf"
+    ],
+    "correctAnswer": "Robin Hood"
   },
   {
     "day": 9,
-    "text": "Kdo je autorem slavných loutkových postav Spejbla a Hurvínka?",
-    "options": ["Jiří Trnka", "Josef Skupa", "Karel Zeman", "Hermína Týrlová"],
-    "correctAnswer": "Josef Skupa"
+    "text": "Které město, známé také jako 'Věčné město', bylo centrem mocné starověké říše?",
+    "options": [
+      "Athény",
+      "Alexandrie",
+      "Konstantinopol",
+      "Řím"
+    ],
+    "correctAnswer": "Řím"
   },
   {
     "day": 10,
-    "text": "Jak se jmenuje největší ostrov v Středozemním moři?",
-    "options": ["Sardinie", "Korsika", "Kypr", "Sicílie"],
-    "correctAnswer": "Sicílie"
+    "text": "Kdo je považován za zakladatele psychoanalýzy, metody zkoumání nevědomé mysli?",
+    "options": [
+      "Carl Jung",
+      "Ivan Pavlov",
+      "Sigmund Freud",
+      "B. F. Skinner"
+    ],
+    "correctAnswer": "Sigmund Freud"
   },
   {
     "day": 11,
-    "text": "Kolik hráčů má jeden tým na hřišti při fotbalovém zápase?",
-    "options": ["9", "10", "11", "12"],
-    "correctAnswer": "11"
+    "text": "Která desková hra, vytvořená v Česku, se stala mezinárodním hitem a hráči v ní tvoří slova ze svých sedmi písmen?",
+    "options": [
+      "Dostihy a sázky",
+      "Člověče, nezlob se!",
+      "Scrabble",
+      "Krycí jména"
+    ],
+    "correctAnswer": "Krycí jména"
   },
   {
     "day": 12,
-    "text": "Který z těchto nástrojů patří mezi dechové dřevěné nástroje?",
-    "options": ["Trombón", "Tuba", "Klarinet", "Trubka"],
-    "correctAnswer": "Klarinet"
+    "text": "Jak se nazývá nejvyšší hora Severní Ameriky, nacházející se na Aljašce?",
+    "options": [
+      "Mount Whitney",
+      "Mount Logan",
+      "Denali (dříve Mount McKinley)",
+      "Pico de Orizaba"
+    ],
+    "correctAnswer": "Denali (dříve Mount McKinley)"
   },
   {
     "day": 13,
-    "text": "Jak se nazývá nejvyšší vodopád na světě, nacházející se ve Venezuele?",
-    "options": ["Niagarské vodopády", "Viktoriiny vodopády", "Andělský vodopád", "Iguazú"],
-    "correctAnswer": "Andělský vodopád"
+    "text": "V severské mytologii je Thor bohem hromu. Jak se jmenuje jeho mocné kladivo?",
+    "options": [
+      "Gungnir",
+      "Excalibur",
+      "Mjöllni",
+      "Aegis"
+    ],
+    "correctAnswer": "Mjöllni"
   },
   {
     "day": 14,
-    "text": "Který český film režiséra Miloše Formana získal 8 Oscarů, včetně ceny za nejlepší film?",
-    "options": ["Přelet nad kukaččím hnízdem", "Vlasy", "Amadeus", "Lid versus Larry Flynt"],
-    "correctAnswer": "Amadeus"
+    "text": "Který italský pokrm se skládá z tenkých plátků těstovin prokládaných masovým ragú, bešamelem a sýrem, a následně se zapéká?",
+    "options": [
+      "Spaghetti Carbonara",
+      "Risotto",
+      "Lasagne",
+      "Ravioli"
+    ],
+    "correctAnswer": "Lasagne"
   },
   {
     "day": 15,
-    "text": "Jaká je přibližná rychlost světla ve vakuu?",
-    "options": ["300 km/s", "30 000 km/s", "300 000 km/s", "3 000 000 km/s"],
-    "correctAnswer": "300 000 km/s"
+    "text": "Která událost z roku 1968 v Československu představovala pokus o uvolnění politických poměrů, který byl násilně potlačen invazí vojsk Varšavské smlouvy?",
+    "options": [
+      "Sametová revoluce",
+      "Pražské povstání",
+      "Pražské jaro",
+      "Vítězný únor"
+    ],
+    "correctAnswer": "Pražské jaro"
   },
   {
     "day": 16,
-    "text": "Která slavná bitva se odehrála v roce 1815 a znamenala konečnou porážku Napoleona Bonaparta?",
-    "options": ["Bitva u Trafalgaru", "Bitva u Slavkova", "Bitva u Lipska", "Bitva u Waterloo"],
-    "correctAnswer": "Bitva u Waterloo"
+    "text": "Jaký hudební styl, který vznikl v afroamerických komunitách v New Orleans, je charakteristický improvizací, synkopami a 'blue' tóny?",
+    "options": [
+      "Rock and roll",
+      "Jazz",
+      "Country",
+      "Reggae"
+    ],
+    "correctAnswer": "Jazz"
   },
   {
     "day": 17,
-    "text": "Jak se jmenuje hlavní město Austrálie?",
-    "options": ["Sydney", "Melbourne", "Perth", "Canberra"],
-    "correctAnswer": "Canberra"
+    "text": "Jak se jmenuje obří monolitická pískovcová skála v Austrálii, která je posvátným místem pro domorodé obyvatele?",
+    "options": [
+      "Ayers Rock (Uluru)",
+      "The Olgas (Kata Tjuta)",
+      "Wave Rock",
+      "Twelve Apostles"
+    ],
+    "correctAnswer": "Ayers Rock (Uluru)"
   },
   {
     "day": 18,
-    "text": "Který z těchto materiálů je nejtvrdší přírodní látkou?",
-    "options": ["Křemen", "Topaz", "Korund", "Diamant"],
-    "correctAnswer": "Diamant"
+    "text": "Který prvek periodické tabulky má chemickou značku Fe a je klíčový pro přenos kyslíku v červených krvinkách?",
+    "options": [
+      "Zlato (Au)",
+      "Stříbro (Ag)",
+      "Měď (Cu)",
+      "Železo (Fe)"
+    ],
+    "correctAnswer": "Železo (Fe)"
   },
   {
     "day": 19,
-    "text": "Který český fotbalista získal Zlatý míč pro nejlepšího fotbalistu Evropy v roce 2003?",
-    "options": ["Petr Čech", "Karel Poborský", "Pavel Nedvěd", "Jan Koller"],
-    "correctAnswer": "Pavel Nedvěd"
+    "text": "Kdo napsal slavný román 'Bídníci' (Les Misérables), epické dílo o sociální nespravedlnosti ve Francii 19. století?",
+    "options": [
+      "Alexandre Dumas",
+      "Victor Hugo",
+      "Jules Verne",
+      "Émile Zola"
+    ],
+    "correctAnswer": "Victor Hugo"
   },
   {
     "day": 20,
-    "text": "Jak se jmenuje galaxie, ve které se nachází naše Sluneční soustava?",
-    "options": ["Galaxie v Andromedě", "Galaxie Sombrero", "Mléčná dráha", "Galaxie Vírová"],
-    "correctAnswer": "Mléčná dráha"
+    "text": "Která část lidského mozku je zodpovědná především za koordinaci pohybů, rovnováhu a motorické učení?",
+    "options": [
+      "Mozeček",
+      "Čelní lalok",
+      "Hypotalamus",
+      "Spánkový lalok"
+    ],
+    "correctAnswer": "Mozeček"
   },
   {
     "day": 21,
-    "text": "Kdo je autorem slavné tragédie 'Hamlet'?",
-    "options": ["Molière", "Sofoklés", "William Shakespeare", "Goethe"],
-    "correctAnswer": "William Shakespeare"
+    "text": "Jaký je název pro největší druh žraloka, který je filtrátorem a živí se převážně planktonem?",
+    "options": [
+      "Žralok bílý",
+      "Žralok tygří",
+      "Žralok obrovský (velrybí)",
+      "Kladivoun"
+    ],
+    "correctAnswer": "Žralok obrovský (velrybí)"
   },
   {
     "day": 22,
-    "text": "Který oceán je největší a nejhlubší na světě?",
-    "options": ["Atlantský oceán", "Indický oceán", "Tichý oceán", "Severní ledový oceán"],
-    "correctAnswer": "Tichý oceán"
+    "text": "Ve kterém francouzském městě se každoročně koná prestižní filmový festival, kde se uděluje hlavní cena Zlatá palma?",
+    "options": [
+      "Paříž",
+      "Nice",
+      "Marseille",
+      "Cannes"
+    ],
+    "correctAnswer": "Cannes"
   },
   {
     "day": 23,
-    "text": "V kterém roce byla podepsána Deklarace nezávislosti Spojených států amerických?",
-    "options": ["1776", "1789", "1812", "1865"],
-    "correctAnswer": "1776"
+    "text": "Která planeta je v naší sluneční soustavě nejblíže Slunci?",
+    "options": [
+      "Venuše",
+      "Mars",
+      "Země",
+      "Merkur"
+    ],
+    "correctAnswer": "Merkur"
   },
   {
     "day": 24,
-    "text": "Jak se nazývá věda zabývající se studiem počasí?",
-    "options": ["Klimatologie", "Meteorologie", "Hydrologie", "Seismologie"],
-    "correctAnswer": "Meteorologie"
+    "text": "Který basketbalista je považován za jednoho z nejlepších v historii a dovedl tým Chicago Bulls k šesti titulům v NBA v 90. letech?",
+    "options": [
+      "LeBron James",
+      "Kobe Bryant",
+      "Michael Jordan",
+      "Magic Johnson"
+    ],
+    "correctAnswer": "Michael Jordan"
   },
   {
     "day": 25,
-    "text": "Jak se jmenuje nejdelší pohoří na světě, které se táhne podél západního pobřeží Jižní Ameriky?",
-    "options": ["Himaláj", "Skalnaté hory", "Alpy", "Andy"],
-    "correctAnswer": "Andy"
+    "text": "Jak se nazývá hlavní město Argentiny, proslulé tangem a barevnou čtvrtí La Boca?",
+    "options": [
+      "Rio de Janeiro",
+      "Santiago de Chile",
+      "Buenos Aires",
+      "Lima"
+    ],
+    "correctAnswer": "Buenos Aires"
   },
   {
     "day": 26,
-    "text": "Která z těchto starověkých civilizací vzkvétala mezi řekami Eufrat a Tigris?",
-    "options": ["Starověký Egypt", "Údolí Indu", "Mezopotámie", "Starověká Čína"],
-    "correctAnswer": "Mezopotámie"
+    "text": "Která historická obchodní cesta spojovala po staletí Čínu se Středomořím a sloužila k výměně zboží, myšlenek a kultury?",
+    "options": [
+      "Jantarová stezka",
+      "Hedvábná stezka",
+      "Královská cesta",
+      "Cesta kadidla"
+    ],
+    "correctAnswer": "Hedvábná stezka"
   },
   {
     "day": 27,
-    "text": "Jaký je název pro studenou, hustou polévku španělského původu, připravovanou ze syrové zeleniny?",
-    "options": ["Minestrone", "Boršč", "Gazpacho", "Vichyssoise"],
-    "correctAnswer": "Gazpacho"
+    "text": "Která japonská bojová umění se překládá jako 'jemná cesta' a klade důraz na využití soupeřovy síly proti němu samému?",
+    "options": [
+      "Karate",
+      "Judo",
+      "Kendo",
+      "Aikido"
+    ],
+    "correctAnswer": "Judo"
   },
   {
     "day": 28,
-    "text": "Která z planet naší sluneční soustavy má nejvíce měsíců?",
-    "options": ["Země", "Jupiter", "Saturn", "Uran"],
-    "correctAnswer": "Saturn"
+    "text": "Jak se jmenuje slavná gotická katedrála v Paříži, jejíž stavba začala ve 12. století a kterou proslavil román Victora Huga?",
+    "options": [
+      "Katedrála v Chartres",
+      "Bazilika Sacré-Cœur",
+      "Katedrála Notre-Dame",
+      "Sainte-Chapelle"
+    ],
+    "correctAnswer": "Katedrála Notre-Dame"
   },
   {
     "day": 29,
-    "text": "Kdo byl prvním člověkem, který vstoupil na Měsíc?",
-    "options": ["Jurij Gagarin", "Buzz Aldrin", "Neil Armstrong", "Michael Collins"],
-    "correctAnswer": "Neil Armstrong"
+    "text": "Jak se nazývá základní stavební a funkční jednotka nervového systému, která přenáší informace?",
+    "options": [
+      "Nefron",
+      "Neuron",
+      "Myocyt",
+      "Glukagon"
+    ],
+    "correctAnswer": "Neuron"
   },
   {
     "day": 30,
-    "text": "V jakém městě se nachází slavná galerie Louvre?",
-    "options": ["Londýn", "Madrid", "Paříž", "Berlín"],
-    "correctAnswer": "Paříž"
+    "text": "Která měna je oficiálním platidlem ve Švýcarsku?",
+    "options": [
+      "Euro",
+      "Švýcarský frank",
+      "Švýcarská koruna",
+      "Libra"
+    ],
+    "correctAnswer": "Švýcarský frank"
   }
 ]
