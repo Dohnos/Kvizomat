@@ -195,3 +195,42 @@ h1 .fa-brain { color: var(--primary-color); }
 .modal-button { padding: 10px 20px; border: none; border-radius: 5px; font-size: 1em; font-weight: 500; cursor: pointer; transition: background-color 0.2s; }
 .modal-button.confirm { background-color: var(--secondary-color); color: white; }
 .modal-button.confirm:hover { background-color: var(--primary-color); }
+
+
+/* =================================================== */
+/*      STYLY PRO TLAČÍTKO "HLEDEJ, PROČ"              */
+/* =================================================== */
+
+/* Kontejner pro tlačítko - zajišťuje odsazení a zarovnání */
+#explain-answer-container {
+    margin-top: 20px; /* Horní odsazení od feedback zprávy */
+    margin-bottom: 15px; /* Dolní odsazení od časovače další otázky */
+    text-align: center; /* Zarovnání tlačítka na střed */
+}
+
+/* Samotné tlačítko */
+#explain-answer-btn {
+    background-color: #1e90ff; /* Modrá barva pozadí (můžete změnit) */
+    color: #ffffff; /* Bílý text */
+    font-family: 'Roboto', sans-serif; /* Použití stejného fontu jako zbytek stránky */
+    font-size: 16px; /* Velikost písma */
+    font-weight: 500; /* Střední tučnost písma */
+    border: none; /* Odstranění výchozího rámečku */
+    border-radius: 8px; /* Zakulacení rohů */
+    padding: 12px 24px; /* Vnitřní odsazení (svislé a vodorovné) */
+    cursor: pointer; /* Změna kurzoru na "ručičku" při najetí */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Plynulý přechod pro efekty */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Jemný stín pro 3D efekt */
+}
+
+/* Efekt při najetí myší na tlačítko */
+#explain-answer-btn:hover {
+    background-color: #1c82e6; /* Mírně tmavší modrá při najetí */
+    transform: translateY(-2px); /* Lehké posunutí nahoru pro dynamický efekt */
+}
+
+/* Efekt při kliknutí na tlačítko */
+#explain-answer-btn:active {
+    transform: translateY(0); /* Vrácení do původní pozice */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Zmenšení stínu */
+}
