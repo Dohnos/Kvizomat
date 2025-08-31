@@ -13,7 +13,7 @@ const db = firebase.database();
 
 let currentQuestion = null;
 let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null };
-const quizStartDate = new Date('2025-08-01T00:00:00');
+const quizStartDate = new Date('2025-09-01T00:00:00');
 let allQuestionsFromDB = [];
 const QUESTION_TIME_LIMIT = 25;
 let questionTimerInterval = null;
@@ -248,7 +248,7 @@ function handleExplainAnswer() {
     if (!currentQuestion) return; // Pojistka, kdyby otázka nebyla dostupná
 
     // Sestavení promptu pro Perplexity
-    const prompt = `Vysvětli podrobně a pro laika, proč je odpověď '${currentQuestion.correctAnswer}' správná na otázku: '${currentQuestion.text}'`;
+    const prompt = `Vysvětli podrobně a pro laika, který je učástník kvízu, proč je odpověď '${currentQuestion.correctAnswer}' správná na otázku: '${currentQuestion.text}'. Použij emoji v souhrnu a hezky text strukturuj pro přehlednost. Nakonci napiš souhrn v bodech. Text vysvětlení pro uživatele nebude dlouhý, ale bude stručný. Nakonci napiš, jestli má uživatel otázku, tak ať se zeptá.`;
     
     // Zakódování promptu pro bezpečné použití v URL
     const encodedPrompt = encodeURIComponent(prompt);
