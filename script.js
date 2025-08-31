@@ -15,7 +15,7 @@ let currentQuestion = null;
 let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null };
 const quizStartDate = new Date('2025-09-01T00:00:00');
 let allQuestionsFromDB = [];
-const QUESTION_TIME_LIMIT = 20;
+const QUESTION_TIME_LIMIT = 25;
 let questionTimerInterval = null;
 
 // Elementy DOM
