@@ -153,6 +153,10 @@ h1 .fa-brain { color: var(--primary-color); }
 #leaderboard th:first-child, #hall-of-fame-table th:first-child { border-top-left-radius: 10px; }
 #leaderboard th:last-child, #hall-of-fame-table th:last-child { border-top-right-radius: 10px; }
 #leaderboard td, #hall-of-fame-table td { background-color: #fdfdfd; padding: 15px 18px; border-bottom: 1px solid #f0f2f5; }
+#leaderboard td {
+    padding: 10px 18px;
+    vertical-align: middle;
+}
 
 #admin-controls { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;}
 #admin-controls button {
@@ -221,6 +225,24 @@ h1 .fa-brain { color: var(--primary-color); }
     cursor: pointer; /* Změna kurzoru na "ručičku" při najetí */
     transition: background-color 0.3s ease, transform 0.2s ease; /* Plynulý přechod pro efekty */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Jemný stín pro 3D efekt */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.user-name {
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+.last-answer-time {
+    font-size: 0.8em;
+    color: var(--light-text);
+    font-style: italic;
 }
 
 /* Efekt při najetí myší na tlačítko */
