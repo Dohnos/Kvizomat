@@ -584,9 +584,9 @@ function listenForLeaderboardUpdates() {
             // Formátování času poslední odpovědi
             let lastAnswerText = 'Ještě neodpověděl';
             if (user.lastAnswerDate) {
-                // Převedeme ISO string na lokální čas a přidáme 1 den
-                const lastAnswer = new Date(user.lastAnswerDate);
-                lastAnswer.setDate(lastAnswer.getDate() + 1); // Přidáme 1 den
+                // Převedeme čas z Firebase na lokální čas v Praze
+                const lastAnswerUTC = new Date(user.lastAnswerDate);
+                const lastAnswer = new Date(lastAnswerUTC.toLocaleString('en-US', { timeZone: 'Europe/Prague' }));
                 const now = new Date();
                 
                 // Nastavíme oba datumy na začátek dne v lokálním čase
@@ -594,24 +594,43 @@ function listenForLeaderboardUpdates() {
                 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 
                 // Spočítáme rozdíl ve dnech
-                const diffTime = Math.abs(today - lastAnswerDay);
+                const diffTime = today - lastAnswerDay;
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
                 if (diffDays === 0) {
                     // Pokud odpověděl dnes
-                    lastAnswerText = `Dnes ${lastAnswer.toLocaleTimeString('cs-CZ', {
+                    const timeStr = lastAnswer.toLocaleTimeString('cs-CZ', {
                         hour: '2-digit', 
                         minute: '2-digit',
                         timeZone: 'Europe/Prague'
-                    })}`;
+                    });
+                    lastAnswerText = `Dnes ${timeStr}`;
                 } else if (diffDays === 1) {
                     // Pokud odpověděl včera
                     lastAnswerText = 'Včera';
-                } else {
+                } else if (diffDays > 1) {
                     // Pokud odpověděl dříve
                     lastAnswerText = `Před ${diffDays} dny`;
+                } else {
+                    // Pro případ záporného rozdílu (budoucí datum)
+                    lastAnswerText = 'Dnes';
                 }
             }
+
+            const row = leaderboardBody.insertRow();
+            row.innerHTML = `
+                <td>${rankIcon}</td>
+                <td>
+                    <div class="user-info">
+                        <span class="user-name">${user.name}</span>
+                        <span class="last-answer-time">${lastAnswerText}</span>
+                    </div>
+                </td>
+                <td>${user.score}</td>
+            `;
+        });
+    });
+}
 
             const row = leaderboardBody.insertRow();
             row.innerHTML = `
