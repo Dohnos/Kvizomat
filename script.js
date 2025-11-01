@@ -588,10 +588,9 @@ function listenForLeaderboardUpdates() {
             const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
             
             // Formátování času poslední odpovědi
-            let lastAnswerText = 'Ještě neodpověděl';
+            let lastAnswerText = '❓ Ještě neodpověděl';
             
             if (user.lastAnswerDate) {
-                // Převedeme čas z Firebase na lokální čas
                 const lastAnswer = new Date(user.lastAnswerDate);
                 const now = new Date();
 
@@ -613,18 +612,13 @@ function listenForLeaderboardUpdates() {
 
                 if (diffDays <= 0) {
                     // Pokud odpověděl dnes
-                    const timeStr = lastAnswer.toLocaleTimeString('cs-CZ', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        timeZone: 'Europe/Prague'
-                    });
-                    lastAnswerText = `Dnes ${timeStr}`;
+                    lastAnswerText = '⭐ Dnes';
                 } else if (diffDays === 1) {
                     // Pokud odpověděl včera
-                    lastAnswerText = 'Včera';
+                    lastAnswerText = '🌙 Včera';
                 } else {
                     // Pokud odpověděl dříve
-                    lastAnswerText = `Před ${diffDays} dny`;
+                    lastAnswerText = `⏳ Před ${diffDays} dny`;
                 }
             }
 
