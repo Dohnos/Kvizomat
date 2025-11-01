@@ -572,7 +572,6 @@ async function fetchQuestionsFromDB() {
     } catch (error) { console.error("Chyba při načítání otázek z Firebase:", error); }
 }
 
-// Naslouchá změnám v tabulce výsledků.
 function listenForLeaderboardUpdates() {
     db.ref('users').orderByChild('score').on('value', (snapshot) => {
         let users = [];
@@ -581,8 +580,50 @@ function listenForLeaderboardUpdates() {
         users.reverse().slice(0, 10).forEach((user, index) => {
             const rank = index + 1;
             const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+            
+            // Formátování času poslední odpovědi
+            let lastAnswerText = 'Ještě neodpověděl';
+            if (user.lastAnswerDate) {
+                // Převedeme ISO string na lokální čas a přidáme 1 den
+                const lastAnswer = new Date(user.lastAnswerDate);
+                lastAnswer.setDate(lastAnswer.getDate() + 1); // Přidáme 1 den
+                const now = new Date();
+                
+                // Nastavíme oba datumy na začátek dne v lokálním čase
+                const lastAnswerDay = new Date(lastAnswer.getFullYear(), lastAnswer.getMonth(), lastAnswer.getDate());
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                
+                // Spočítáme rozdíl ve dnech
+                const diffTime = Math.abs(today - lastAnswerDay);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) {
+                    // Pokud odpověděl dnes
+                    lastAnswerText = `Dnes ${lastAnswer.toLocaleTimeString('cs-CZ', {
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        timeZone: 'Europe/Prague'
+                    })}`;
+                } else if (diffDays === 1) {
+                    // Pokud odpověděl včera
+                    lastAnswerText = 'Včera';
+                } else {
+                    // Pokud odpověděl dříve
+                    lastAnswerText = `Před ${diffDays} dny`;
+                }
+            }
+
             const row = leaderboardBody.insertRow();
-            row.innerHTML = `<td>${rankIcon}</td><td>${user.name}</td><td>${user.score}</td>`;
+            row.innerHTML = `
+                <td>${rankIcon}</td>
+                <td>
+                    <div class="user-info">
+                        <span class="user-name">${user.name}</span>
+                        <span class="last-answer-time">${lastAnswerText}</span>
+                    </div>
+                </td>
+                <td>${user.score}</td>
+            `;
         });
     });
 }
