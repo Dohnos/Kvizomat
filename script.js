@@ -156,6 +156,98 @@ async function processUserLogin(isNewLogin = false) {
     }
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Seznam 31 citátů (jeden pro každý den)
+    const quotes = [
+        "Každý nový den je nová šance změnit svůj život.", // 1. den
+        "Neúspěch je jen příležitost začít znovu, tentokrát inteligentněji.", // 2. den
+        "Věř, že to dokážeš, a jsi v polovině cesty.", // 3. den
+        "Tvé sny nemají datum vypršení. Zhluboka se nadechni a zkus to znovu.",
+        "Limity existují jen v tvé mysli.",
+        "Dělej to, co můžeš, tam, kde jsi, s tím, co máš.",
+        "Úspěch není konečný, neúspěch není fatální. Důležitá je odvaha pokračovat.",
+        "Malé kroky každý den vedou k velkým výsledkům.",
+        "Nikdy není pozdě stát se tím, kým jsi mohl být.",
+        "Překážky jsou to, co vidíš, když se přestaneš dívat na svůj cíl.",
+        "Nečekej na příležitost. Vytvoř ji.",
+        "Tajemství úspěchu je začít.",
+        "Jediný způsob, jak dělat skvělou práci, je milovat to, co děláš.",
+        "Buď změnou, kterou chceš vidět ve světě.",
+        "Když prší, hledej duhu. Když je tma, hledej hvězdy.",
+        "Tvůj čas je omezený, tak ho neplýtvej žitím života někoho jiného.",
+        "Nejlepší čas zasadit strom byl před 20 lety. Druhý nejlepší čas je teď.",
+        "Všechno se zdá nemožné, dokud to není hotové.",
+        "Nenech se ovládnout strachem z prohry.",
+        "Disciplína je mostem mezi cíli a úspěchem.",
+        "Tvůj postoj, ne tvé vlohy, určí tvou výšku.",
+        "Chyby jsou důkazem toho, že se snažíš.",
+        "Soustřeď se na cíl, ne na překážky.",
+        "Každý expert byl kdysi začátečník.",
+        "Motivace tě nastartuje. Zvyk tě udrží v chodu.",
+        "Nezastavuj se, když jsi unavený. Zastav se, až budeš hotový.",
+        "Budoucnost patří těm, kdo věří v krásu svých snů.",
+        "Jestli to dokážeš vysnít, dokážeš to i udělat.",
+        "Nikdy se nevzdávej něčeho, na co myslíš každý den.",
+        "Úspěch je součet malých snah opakovaných den co den.",
+        "Dnešek je ten správný den začít." // 31. den
+    ];
+
+    // 2. Elementy
+    const modal = document.getElementById("motivationModal");
+    const spanClose = document.getElementsByClassName("close-btn")[0];
+    const btnClose = document.getElementById("closeModalBtn");
+    const quoteText = document.getElementById("daily-quote");
+    const dateText = document.getElementById("modal-date");
+
+    // 3. Logika data
+    const today = new Date();
+    const dayOfMonth = today.getDate(); // Vrací 1 až 31
+    
+    // Nastavení data do hlavičky (např. 1. prosince)
+    const options = { day: 'numeric', month: 'long' };
+    dateText.innerText = today.toLocaleDateString('cs-CZ', options);
+
+    // 4. Výběr citátu (pole začíná indexem 0, takže odečítáme 1)
+    // Používáme modulo (%), aby to fungovalo i kdyby bylo citátů méně než dní
+    const quoteIndex = (dayOfMonth - 1) % quotes.length;
+    quoteText.innerText = quotes[quoteIndex];
+
+    // 5. Kontrola LocalStorage (Zda už dnes uživatel citát viděl)
+    const storageKey = 'lastSeenQuoteDate';
+    const lastSeen = localStorage.getItem(storageKey);
+    const todayString = today.toDateString(); // Unikátní string pro dnešek
+
+    // Pokud uživatel dnes citát NEVIDĚL, zobrazíme ho
+    if (lastSeen !== todayString) {
+        modal.style.display = "block";
+    }
+
+    // 6. Funkce pro zavření
+    function closeModal() {
+        modal.style.display = "none";
+        // Uložíme do prohlížeče, že dnes už viděl (aby neotravovalo při refresh)
+        localStorage.setItem(storageKey, todayString);
+    }
+
+    // Zavření křížkem
+    spanClose.onclick = function() {
+        closeModal();
+    }
+
+    // Zavření tlačítkem
+    btnClose.onclick = function() {
+        closeModal();
+    }
+
+    // Zavření kliknutím mimo okno
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+});
+
 // Aktualizuje data konkrétního uživatele v DB.
 async function updateUser(updates) {
     if (!currentUser.id) return;
