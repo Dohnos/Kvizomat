@@ -23,6 +23,113 @@ body {
     box-sizing: border-box;
 }
 
+/* Pozadí celého modalu (zašedlé pozadí) */
+.modal {
+    display: none; /* Skryté ve výchozím stavu */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Černá s průhledností */
+    backdrop-filter: blur(5px); /* Rozmazání pozadí pro moderní efekt */
+    animation: fadeIn 0.4s;
+}
+
+/* Obsah okna */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* 10% od vrchu, centrované */
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Křížek pro zavření */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 15px;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+/* Hlavička */
+.modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Pěkný gradient */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.date-text {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Tělo s citátem */
+.modal-body {
+    padding: 30px 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* Patička s tlačítkem */
+.modal-footer {
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+
+#closeModalBtn {
+    background-color: #764ba2;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#closeModalBtn:hover {
+    background-color: #5a387e;
+}
+
+/* Animace */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes slideIn {
+    from {transform: translateY(-50px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
 .container {
     background-color: var(--white-bg);
     padding: 30px 40px;
