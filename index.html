@@ -12,6 +12,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
+<!-- Modal Okno pro Motivační Citát -->
+<div id="motivationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-header">
+            <h3>✨ Myšlenka dne</h3>
+            <p id="modal-date" class="date-text"></p>
+        </div>
+        <div class="modal-body">
+            <p id="daily-quote">Načítám citát...</p>
+        </div>
+        <div class="modal-footer">
+            <button id="closeModalBtn">Jdu na kvíz!</button>
+        </div>
+    </div>
+</div>
     <!-- Tlačítko pro změnu účtu, skryté dokud se uživatel nepřihlásí -->
     <button id="change-account-btn" style="display: none;"><i class="fas fa-user-cog"></i> Změnit účet</button>
     
