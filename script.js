@@ -12,7 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let currentQuestion = null;
-let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null };
+let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, lastAnswerCorrect: null };
 const quizStartDate = new Date('2026-01-01T00:00:00');
 let allQuestionsFromDB = [];
 const QUESTION_TIME_LIMIT = 30;
@@ -29,8 +29,8 @@ const questionTextEl = document.getElementById('question-text');
 const optionsContainerEl = document.getElementById('options-container');
 const submitAnswerButton = document.getElementById('submit-answer');
 const feedbackEl = document.getElementById('feedback');
-const explainAnswerContainer = document.getElementById('explain-answer-container'); // PŘIDAT TENTO ŘÁDEK
-const explainAnswerBtn = document.getElementById('explain-answer-btn'); // PŘIDAT TENTO ŘÁDEK
+const explainAnswerContainer = document.getElementById('explain-answer-container');
+const explainAnswerBtn = document.getElementById('explain-answer-btn');
 const leaderboardBody = document.getElementById('leaderboard').getElementsByTagName('tbody')[0];
 const currentDateEl = document.getElementById('current-date');
 const dayNumberDisplayEl = document.getElementById('day-number-display');
@@ -66,24 +66,116 @@ async function init() {
     console.log("Inicializace aplikace...");
     await fetchQuestionsFromDB();
     currentUser.id = localStorage.getItem('quizUserId');
+    
     if (currentUser.id) {
         currentUser.name = localStorage.getItem('quizUsername');
         currentUser.pin = localStorage.getItem('quizUserPin');
         await processUserLogin();
     } else {
         welcomeSection.style.display = 'block';
+        showDailyQuote(); 
     }
 }
 
+// --- Logika Motivačních citátů s časovačem ---
+function showDailyQuote(onCompleteCallback = null) {
+    const quotes = [
+        "Každý nový den je nová šance změnit svůj život.",
+        "Neúspěch je jen příležitost začít znovu, tentokrát inteligentněji.",
+        "Věř, že to dokážeš, a jsi v polovině cesty.",
+        "Tvé sny nemají datum vypršení. Zhluboka se nadechni a zkus to znovu.",
+        "Limity existují jen v tvé mysli.",
+        "Dělej to, co můžeš, tam, kde jsi, s tím, co máš.",
+        "Úspěch není konečný, neúspěch není fatální. Důležitá je odvaha pokračovat.",
+        "Malé kroky každý den vedou k velkým výsledkům.",
+        "Nikdy není pozdě stát se tím, kým jsi mohl být.",
+        "Překážky jsou to, co vidíš, když se přestaneš dívat na svůj cíl.",
+        "Nečekej na příležitost. Vytvoř ji.",
+        "Tajemství úspěchu je začít.",
+        "Jediný způsob, jak dělat skvělou práci, je milovat to, co děláš.",
+        "Buď změnou, kterou chceš vidět ve světě.",
+        "Když prší, hledej duhu. Když je tma, hledej hvězdy.",
+        "Tvůj čas je omezený, tak ho neplýtvej žitím života někoho jiného.",
+        "Nejlepší čas zasadit strom byl před 20 lety. Druhý nejlepší čas je teď.",
+        "Všechno se zdá nemožné, dokud to není hotové.",
+        "Nenech se ovládnout strachem z prohry.",
+        "Disciplína je mostem mezi cíli a úspěchem.",
+        "Tvůj postoj, ne tvé vlohy, určí tvou výšku.",
+        "Chyby jsou důkazem toho, že se snažíš.",
+        "Soustřeď se na cíl, ne na překážky.",
+        "Každý expert byl kdysi začátečník.",
+        "Motivace tě nastartuje. Zvyk tě udrží v chodu.",
+        "Nezastavuj se, když jsi unavený. Zastav se, až budeš hotový.",
+        "Budoucnost patří těm, kdo věří v krásu svých snů.",
+        "Jestli to dokážeš vysnít, dokážeš to i udělat.",
+        "Nikdy se nevzdávej něčeho, na co myslíš každý den.",
+        "Úspěch je součet malých snah opakovaných den co den.",
+        "Dnešek je ten správný den začít."
+    ];
 
-// --- Správa uživatelů (Přihlášení / Registrace) ---
+    const modal = document.getElementById("motivationModal");
+    const quoteText = document.getElementById("daily-quote");
+    const dateText = document.getElementById("modal-date");
+    const closeButtons = document.querySelectorAll(".close-btn, #closeModalBtn");
+
+    const today = new Date();
+    const dayOfMonth = today.getDate();
+    const options = { day: 'numeric', month: 'long' };
+    if (dateText) dateText.innerText = today.toLocaleDateString('cs-CZ', options);
+
+    const quoteIndex = (dayOfMonth - 1) % quotes.length;
+    if (quoteText) quoteText.innerText = quotes[quoteIndex];
+
+    if (modal) modal.style.display = "block";
+
+    let timeLeft = 5;
+
+    let countdownDisplay = document.getElementById('quote-countdown');
+    if (!countdownDisplay) {
+        countdownDisplay = document.createElement('div');
+        countdownDisplay.id = 'quote-countdown';
+        countdownDisplay.style.cssText = "margin-top: 15px; font-weight: bold; color: var(--primary-color); font-size: 1.2rem; text-align: center;";
+        if (quoteText && quoteText.parentNode) {
+            quoteText.parentNode.insertBefore(countdownDisplay, quoteText.nextSibling);
+        }
+    }
+
+    closeButtons.forEach(btn => btn.style.display = 'none');
+
+    const updateCountdown = () => {
+        countdownDisplay.innerText = `Přečti si citát... (${timeLeft})`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            if (modal) modal.style.display = "none";
+            closeButtons.forEach(btn => btn.style.display = 'block');
+            countdownDisplay.innerText = "";
+
+            if (onCompleteCallback && typeof onCompleteCallback === 'function') {
+                onCompleteCallback();
+            }
+        }
+        timeLeft--;
+    };
+
+    updateCountdown();
+    const timerInterval = setInterval(updateCountdown, 1000);
+
+    window.onclick = function(event) {
+        if (timeLeft <= 0 && event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+
+// --- Správa uživatelů ---
 saveUsernameButton.addEventListener('click', () => processUserLogin(true));
 changeAccountButton.addEventListener('click', () => {
     localStorage.clear();
     resetUIForLogout();
 });
 
-// Zpracuje přihlášení nebo registraci nového uživatele.
 async function processUserLogin(isNewLogin = false) {
     if (isNewLogin) {
         const rawUsername = usernameInput.value.trim();
@@ -133,11 +225,11 @@ async function processUserLogin(isNewLogin = false) {
             currentUser.streak = data.streak || 0;
             currentUser.lastAnswerDate = data.lastAnswerDate ? new Date(data.lastAnswerDate) : null;
             currentUser.lastStreakDate = data.lastStreakDate ? new Date(data.lastStreakDate) : null;
+            currentUser.lastAnswerCorrect = data.lastAnswerCorrect; // Načtení stavu poslední odpovědi
         } else {
-             await userRef.set({ name: currentUser.name, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null });
+             await userRef.set({ name: currentUser.name, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, lastAnswerCorrect: null });
         }
 
-        // Aktualizace UI po úspěšném přihlášení
         welcomeSection.style.display = 'none';
         motivationSection.style.display = 'block';
         quizAreaDiv.style.display = 'block';
@@ -156,99 +248,6 @@ async function processUserLogin(isNewLogin = false) {
     }
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Seznam 31 citátů (jeden pro každý den)
-    const quotes = [
-        "Každý nový den je nová šance změnit svůj život.", // 1. den
-        "Neúspěch je jen příležitost začít znovu, tentokrát inteligentněji.", // 2. den
-        "Věř, že to dokážeš, a jsi v polovině cesty.", // 3. den
-        "Tvé sny nemají datum vypršení. Zhluboka se nadechni a zkus to znovu.",
-        "Limity existují jen v tvé mysli.",
-        "Dělej to, co můžeš, tam, kde jsi, s tím, co máš.",
-        "Úspěch není konečný, neúspěch není fatální. Důležitá je odvaha pokračovat.",
-        "Malé kroky každý den vedou k velkým výsledkům.",
-        "Nikdy není pozdě stát se tím, kým jsi mohl být.",
-        "Překážky jsou to, co vidíš, když se přestaneš dívat na svůj cíl.",
-        "Nečekej na příležitost. Vytvoř ji.",
-        "Tajemství úspěchu je začít.",
-        "Jediný způsob, jak dělat skvělou práci, je milovat to, co děláš.",
-        "Buď změnou, kterou chceš vidět ve světě.",
-        "Když prší, hledej duhu. Když je tma, hledej hvězdy.",
-        "Tvůj čas je omezený, tak ho neplýtvej žitím života někoho jiného.",
-        "Nejlepší čas zasadit strom byl před 20 lety. Druhý nejlepší čas je teď.",
-        "Všechno se zdá nemožné, dokud to není hotové.",
-        "Nenech se ovládnout strachem z prohry.",
-        "Disciplína je mostem mezi cíli a úspěchem.",
-        "Tvůj postoj, ne tvé vlohy, určí tvou výšku.",
-        "Chyby jsou důkazem toho, že se snažíš.",
-        "Soustřeď se na cíl, ne na překážky.",
-        "Každý expert byl kdysi začátečník.",
-        "Motivace tě nastartuje. Zvyk tě udrží v chodu.",
-        "Nezastavuj se, když jsi unavený. Zastav se, až budeš hotový.",
-        "Budoucnost patří těm, kdo věří v krásu svých snů.",
-        "Jestli to dokážeš vysnít, dokážeš to i udělat.",
-        "Nikdy se nevzdávej něčeho, na co myslíš každý den.",
-        "Úspěch je součet malých snah opakovaných den co den.",
-        "Dnešek je ten správný den začít." // 31. den
-    ];
-
-    // 2. Elementy
-    const modal = document.getElementById("motivationModal");
-    const spanClose = document.getElementsByClassName("close-btn")[0];
-    const btnClose = document.getElementById("closeModalBtn");
-    const quoteText = document.getElementById("daily-quote");
-    const dateText = document.getElementById("modal-date");
-
-    // 3. Logika data
-    const today = new Date();
-    const dayOfMonth = today.getDate(); // Vrací 1 až 31
-    
-    // Nastavení data do hlavičky (např. 1. prosince)
-    const options = { day: 'numeric', month: 'long' };
-    dateText.innerText = today.toLocaleDateString('cs-CZ', options);
-
-    // 4. Výběr citátu (pole začíná indexem 0, takže odečítáme 1)
-    // Používáme modulo (%), aby to fungovalo i kdyby bylo citátů méně než dní
-    const quoteIndex = (dayOfMonth - 1) % quotes.length;
-    quoteText.innerText = quotes[quoteIndex];
-
-    // 5. Kontrola LocalStorage (Zda už dnes uživatel citát viděl)
-    const storageKey = 'lastSeenQuoteDate';
-    const lastSeen = localStorage.getItem(storageKey);
-    const todayString = today.toDateString(); // Unikátní string pro dnešek
-
-    // Pokud uživatel dnes citát NEVIDĚL, zobrazíme ho
-    if (lastSeen !== todayString) {
-        modal.style.display = "block";
-    }
-
-    // 6. Funkce pro zavření
-    function closeModal() {
-        modal.style.display = "none";
-        // Uložíme do prohlížeče, že dnes už viděl (aby neotravovalo při refresh)
-        localStorage.setItem(storageKey, todayString);
-    }
-
-    // Zavření křížkem
-    spanClose.onclick = function() {
-        closeModal();
-    }
-
-    // Zavření tlačítkem
-    btnClose.onclick = function() {
-        closeModal();
-    }
-
-    // Zavření kliknutím mimo okno
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-});
-
-// Aktualizuje data konkrétního uživatele v DB.
 async function updateUser(updates) {
     if (!currentUser.id) return;
     try {
@@ -260,7 +259,6 @@ async function updateUser(updates) {
 
 
 // --- Hlavní logika kvízu ---
-// Načte a zobrazí otázku pro aktuální den.
 function loadTodaysQuestion() {
     const today = new Date();
     currentDateEl.innerHTML = `<i class="far fa-calendar-alt"></i> ${today.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' })}`;
@@ -275,13 +273,14 @@ function loadTodaysQuestion() {
     currentQuestion = allQuestionsFromDB.find(q => q.day === dayNumber);
     if (currentQuestion) {
         displayQuestion(currentQuestion);
-        startQuestionTimer();
+        showDailyQuote(() => {
+            startQuestionTimer();
+        });
     } else {
         displayNoQuestion();
     }
 }
 
-// Zobrazí text otázky a možnosti odpovědí.
 function displayQuestion(question) {
     questionTextEl.innerHTML = `<i class="fas fa-question-circle"></i> ${question.text}`;
     optionsContainerEl.innerHTML = "";
@@ -295,7 +294,7 @@ function displayQuestion(question) {
     submitAnswerButton.style.display = 'block';
     submitAnswerButton.disabled = true;
     feedbackEl.style.display = 'none';
-    explainAnswerContainer.style.display = 'none'; // PŘIDAT TENTO ŘÁDEK
+    explainAnswerContainer.style.display = 'none';
     nextQuestionTimerDiv.style.display = 'none';
 }
 
@@ -333,24 +332,16 @@ function stopTimer() {
 
 // --- Zpracování odpovědi ---
 submitAnswerButton.addEventListener('click', handleSubmitAnswer);
-explainAnswerBtn.addEventListener('click', handleExplainAnswer); // PŘIDAT TENTO ŘÁDEK
+explainAnswerBtn.addEventListener('click', handleExplainAnswer);
 
-// TUTO CELOU FUNKCI PŘIDAT
 function handleExplainAnswer() {
-    if (!currentQuestion) return; // Pojistka, kdyby otázka nebyla dostupná
-
-    // Sestavení promptu pro Perplexity
+    if (!currentQuestion) return;
     const prompt = `Vysvětli podrobně a pro laika, který je učástník kvízu, proč je odpověď '${currentQuestion.correctAnswer}' správná na otázku: '${currentQuestion.text}'. Použij emoji v souhrnu a hezky text strukturuj pro přehlednost. Nakonci napiš souhrn v bodech. Text vysvětlení pro uživatele nebude dlouhý, ale bude stručný. Nakonci napiš, jestli má uživatel otázku, tak ať se zeptá.`;
-    
-    // Zakódování promptu pro bezpečné použití v URL
     const encodedPrompt = encodeURIComponent(prompt);
-    
-    // Sestavení finální URL a její otevření v nové záložce
     const url = `https://www.perplexity.ai/?q=${encodedPrompt}`;
     window.open(url, '_blank');
 }
 
-// Zpracuje odpověď odeslanou uživatelem.
 function handleSubmitAnswer() {
     stopTimer();
     const selectedOptionButton = optionsContainerEl.querySelector('button.selected');
@@ -361,13 +352,16 @@ function handleSubmitAnswer() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    let updates = { lastAnswerDate: today.toISOString() };
+    let updates = { 
+        lastAnswerDate: today.toISOString()
+    };
 
     if (isCorrect) {
         feedbackEl.innerHTML = `<i class="fas fa-check-circle"></i> Správně! Skvělá práce!`;
         feedbackEl.className = 'feedback-message correct';
         currentUser.score++;
         updates.score = currentUser.score;
+        updates.lastAnswerCorrect = true; // Uložení stavu: Správně
 
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
@@ -385,6 +379,7 @@ function handleSubmitAnswer() {
         feedbackEl.className = 'feedback-message incorrect';
         currentUser.streak = 0;
         updates.streak = 0;
+        updates.lastAnswerCorrect = false; // Uložení stavu: Špatně
     }
 
     updateUser(updates);
@@ -398,24 +393,28 @@ function handleSubmitAnswer() {
 
     submitAnswerButton.style.display = 'none';
     feedbackEl.style.display = 'block';
-    explainAnswerContainer.style.display = 'block'; // PŘIDAT TENTO ŘÁDEK
+    explainAnswerContainer.style.display = 'block';
     showAnsweredStatus();
     showNextQuestionTimer();
     updateStreakDisplay();
 }
 
-// Zpracuje situaci, kdy vyprší čas na odpověď.
 function handleTimeUp() {
     feedbackEl.innerHTML = `<i class="fas fa-clock"></i> Čas vypršel! Správná odpověď byla: <strong>${currentQuestion.correctAnswer}</strong>`;
     feedbackEl.className = 'feedback-message incorrect';
     feedbackEl.style.display = 'block';
-    explainAnswerContainer.style.display = 'block'; // PŘIDAT TENTO ŘÁDEK
+    explainAnswerContainer.style.display = 'block';
     
     const todayISO = new Date().toISOString();
     currentUser.lastAnswerDate = new Date(todayISO);
     currentUser.streak = 0;
     
-    updateUser({ lastAnswerDate: todayISO, streak: 0 });
+    // Uložení stavu: Špatně (nestihl to)
+    updateUser({ 
+        lastAnswerDate: todayISO, 
+        streak: 0,
+        lastAnswerCorrect: false 
+    });
 
     optionsContainerEl.querySelectorAll('button').forEach(btn => btn.disabled = true);
     submitAnswerButton.style.display = 'none';
@@ -426,18 +425,15 @@ function handleTimeUp() {
 
 
 // --- Administrátorské funkce a Síň slávy ---
-// Event Listenery pro admin tlačítka
 archiveWinnerBtn.addEventListener('click', openArchiveModal);
 resetLeaderboardBtn.addEventListener('click', resetLeaderboard);
 
-// Získá název předchozího měsíce pro předvyplnění v modalu.
 function getPreviousMonthYear() {
     const date = new Date();
     date.setMonth(date.getMonth() - 1);
     return date.toLocaleDateString('cs-CZ', { month: 'long', year: 'numeric' });
 }
 
-// Otevře modal pro archivaci a naplní ho hráči.
 async function openArchiveModal() {
     try {
         const snapshot = await db.ref('users').orderByChild('score').once('value');
@@ -449,7 +445,7 @@ async function openArchiveModal() {
         snapshot.forEach(child => {
             users.push({ id: child.key, ...child.val() });
         });
-        users.reverse(); // Seřadit od nejvyššího skóre
+        users.reverse();
         winnerSelect.innerHTML = '<option value="">-- Vyber hráče --</option>';
         users.forEach(user => {
             const option = document.createElement('option');
@@ -467,7 +463,6 @@ async function openArchiveModal() {
     }
 }
 
-// Potvrdí a uloží vybraného vítěze do Síně slávy.
 async function confirmArchive() {
     const selectedOption = winnerSelect.options[winnerSelect.selectedIndex];
     const winnerId = selectedOption.value;
@@ -489,7 +484,6 @@ async function confirmArchive() {
     }
 }
 
-// Resetuje skóre a data všech hráčů.
 async function resetLeaderboard() {
     if (!confirm("Opravdu resetovat celou tabulku a série všech hráčů? Tato akce je nevratná.")) return;
     try {
@@ -501,6 +495,7 @@ async function resetLeaderboard() {
                 updates[`/${child.key}/streak`] = 0;
                 updates[`/${child.key}/lastAnswerDate`] = null;
                 updates[`/${child.key}/lastStreakDate`] = null;
+                updates[`/${child.key}/lastAnswerCorrect`] = null;
             });
             await db.ref('users').update(updates);
             alert("Tabulka byla úspěšně resetována.");
@@ -519,19 +514,25 @@ forgotPinLink.addEventListener('click', (e) => {
 });
 confirmPinResetBtn.addEventListener('click', handlePinReset);
 
-// Univerzální zavírání modalů
 document.querySelectorAll('.close-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        document.getElementById(e.target.dataset.modal).style.display = 'none';
+        const modalId = e.target.dataset.modal;
+        if(modalId) {
+             document.getElementById(modalId).style.display = 'none';
+        }
     });
 });
+document.querySelector('#archive-modal .close-btn').addEventListener('click', () => {
+    archiveModal.style.display = 'none';
+});
+
 window.addEventListener('click', (event) => {
     if (event.target.classList.contains('modal')) {
+        if (event.target.id === 'motivationModal') { return; }
         event.target.style.display = 'none';
     }
 });
 
-// Zpracuje změnu PINu.
 async function handlePinReset() {
     const usernameToReset = resetUsernameInput.value.trim();
     const newPin = newPinInput.value.trim();
@@ -573,16 +574,15 @@ async function handlePinReset() {
 
 
 // --- Pomocné a UI funkce ---
-// Resetuje UI do stavu po odhlášení.
 function resetUIForLogout() {
-    currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null };
+    currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, lastAnswerCorrect: null };
     quizAreaDiv.style.display = 'none'; leaderboardAreaDiv.style.display = 'none'; hallOfFameArea.style.display = 'none';
     motivationSection.style.display = 'none'; adminControlsDiv.style.display = 'none'; changeAccountButton.style.display = 'none';
     welcomeSection.style.display = 'block';
     usernameInput.value = ''; pinInput.value = '';
+    showDailyQuote();
 }
 
-// Zobrazí stav "Zodpovězeno" v časovači.
 function showAnsweredStatus() {
     quizInfoBar.style.display = 'flex';
     timerProgressBar.style.transition = 'none';
@@ -591,13 +591,11 @@ function showAnsweredStatus() {
     questionTimerText.textContent = 'ZODPOVĚŽENO';
 }
 
-// Aktualizuje zobrazení série odpovědí.
 function updateStreakDisplay() {
     currentStreakEl.textContent = currentUser.streak;
     streakDisplay.classList.toggle('active', currentUser.streak > 0);
 }
 
-// Zobrazí UI, když uživatel již odpověděl.
 function displayAlreadyAnswered() {
     questionTextEl.innerHTML = `<i class="fas fa-check-circle"></i> Dnešní otázku jsi již zodpověděl/a. Uvidíme se zítra!`;
     optionsContainerEl.innerHTML = "";
@@ -606,7 +604,6 @@ function displayAlreadyAnswered() {
     showNextQuestionTimer();
 }
 
-// Zobrazí UI, když pro daný den není otázka.
 function displayNoQuestion() {
      questionTextEl.innerHTML = `<i class="fas fa-ghost"></i> Pro dnešek bohužel nemáme otázku. Zkus to zítra!`;
      optionsContainerEl.innerHTML = "";
@@ -615,7 +612,6 @@ function displayNoQuestion() {
      showNextQuestionTimer();
 }
 
-// Kontroluje, zda uživatel již dnes odpověděl.
 function hasUserAnsweredToday() {
     if (!currentUser.lastAnswerDate) return false;
     const lastAnswerDay = new Date(currentUser.lastAnswerDate);
@@ -625,21 +621,18 @@ function hasUserAnsweredToday() {
     return lastAnswerDay.getTime() === today.getTime();
 }
 
-// Získá číslo dne od začátku kvízu.
 function getDayNumber(startDate, currentDate) {
     const start = new Date(startDate); start.setHours(0,0,0,0);
     const current = new Date(currentDate); current.setHours(0,0,0,0);
     return Math.floor((current - start) / (1000 * 60 * 60 * 24));
 }
 
-// Označí vybranou možnost odpovědi.
 function selectOption(selectedButton) {
     optionsContainerEl.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
     selectedButton.classList.add('selected');
     submitAnswerButton.disabled = false;
 }
 
-// Zobrazí časovač do další otázky.
 function showNextQuestionTimer() {
     nextQuestionTimerDiv.style.display = 'block';
     const interval = setInterval(() => {
@@ -655,8 +648,7 @@ function showNextQuestionTimer() {
 }
 
 
-// --- Načítání dat z Firebase ---
-// Načte otázky z DB.
+// --- Načítání dat z Firebase a Tabulka ---
 async function fetchQuestionsFromDB() {
     try {
         const snapshot = await db.ref('questions').once('value');
@@ -679,39 +671,28 @@ function listenForLeaderboardUpdates() {
             const rank = index + 1;
             const rankIcon = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
             
-            // Formátování času poslední odpovědi
             let lastAnswerText = '❓ Ještě neodpověděl';
-            
+            let statusIcon = ''; // Ikona stavu odpovědi
+
             if (user.lastAnswerDate) {
                 const lastAnswer = new Date(user.lastAnswerDate);
                 const now = new Date();
-
-                // Převedeme na půlnoc daného dne
-                const lastAnswerDay = new Date(
-                    lastAnswer.getFullYear(),
-                    lastAnswer.getMonth(),
-                    lastAnswer.getDate()
-                );
-                const today = new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate()
-                );
-
-                // Spočítáme rozdíl ve dnech
+                const lastAnswerDay = new Date(lastAnswer.getFullYear(), lastAnswer.getMonth(), lastAnswer.getDate());
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 const diffTime = today - lastAnswerDay;
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-                if (diffDays <= 0) {
-                    // Pokud odpověděl dnes
-                    lastAnswerText = '⭐ Dnes';
-                } else if (diffDays === 1) {
-                    // Pokud odpověděl včera
-                    lastAnswerText = '🌙 Včera';
-                } else {
-                    // Pokud odpověděl dříve
-                    lastAnswerText = `⏳ Před ${diffDays} dny`;
+                if (diffDays <= 0) { 
+                    lastAnswerText = '⭐ Dnes'; 
+                    // Zobrazíme ikonu jen pokud odpovídal DNES
+                    if (user.lastAnswerCorrect === true) {
+                        statusIcon = '<i class="fas fa-check-circle" style="color: #4caf50; margin-left: 8px;" title="Správná odpověď"></i>';
+                    } else if (user.lastAnswerCorrect === false) {
+                        statusIcon = '<i class="fas fa-times-circle" style="color: #f44336; margin-left: 8px;" title="Špatná odpověď"></i>';
+                    }
                 }
+                else if (diffDays === 1) { lastAnswerText = '🌙 Včera'; }
+                else { lastAnswerText = `⏳ Před ${diffDays} dny`; }
             }
 
             const row = leaderboardBody.insertRow();
@@ -719,7 +700,9 @@ function listenForLeaderboardUpdates() {
                 <td>${rankIcon}</td>
                 <td>
                     <div class="user-info">
-                        <span class="user-name">${user.name}</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                             <span class="user-name">${user.name}${statusIcon}</span>
+                        </div>
                         <span class="last-answer-time">${lastAnswerText}</span>
                     </div>
                 </td>
@@ -729,7 +712,6 @@ function listenForLeaderboardUpdates() {
     });
 }
 
-// Načte Síň slávy.
 async function loadHallOfFame() {
     db.ref('hallOfFame').orderByChild('timestamp').on('value', (snapshot) => {
         hallOfFameBody.innerHTML = "";
