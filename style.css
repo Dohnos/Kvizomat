@@ -363,3 +363,82 @@ h1 .fa-brain { color: var(--primary-color); }
     transform: translateY(0); /* Vrácení do původní pozice */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Zmenšení stínu */
 }
+
+.support-floating-card {
+    position: fixed;
+    right: 10px;
+    bottom: 25px;
+    width: 150px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    font-family: 'Roboto', sans-serif;
+    z-index: 9999;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+.support-floating-card:hover {
+    transform: translateY(-8px);
+}
+
+.support-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}
+
+.support-body {
+    padding: 18px;
+}
+
+.support-body p {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+}
+
+.support-body strong {
+    color: #2d3748;
+    font-weight: 700;
+}
+
+.qr-wrapper {
+    background: #fff;
+    padding: 8px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 2px dashed #cbd5e0;
+    position: relative;
+}
+
+.qr-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.support-body span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e53e3e;
+    display: block;
+    margin-top: 5px;
+}
+
+@media (max-width: 1200px) {
+    .support-floating-card {
+        display: none;
+    }
+}
