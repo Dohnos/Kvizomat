@@ -13,7 +13,7 @@ const db = firebase.database();
 
 let currentQuestion = null;
 let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, lastAnswerCorrect: null };
-const quizStartDate = new Date('2026-01-01T00:00:00');
+const quizStartDate = new Date('2026-02-01T00:00:00');
 let allQuestionsFromDB = [];
 const QUESTION_TIME_LIMIT = 30;
 let questionTimerInterval = null;
@@ -299,18 +299,20 @@ function displayQuestion(question) {
 }
 
 
-// --- Logika časovače ---
 function startQuestionTimer() {
     clearInterval(questionTimerInterval);
+
+    let limit = (currentUser.name && currentUser.name.toLowerCase() === 'babicka') ? 60 : QUESTION_TIME_LIMIT;
+
     timerProgressBar.style.transition = 'none';
     timerProgressBar.style.width = '100%';
     timerProgressBar.style.backgroundColor = 'var(--timer-start-color)';
     void timerProgressBar.offsetWidth;
-    timerProgressBar.style.transition = `width ${QUESTION_TIME_LIMIT}s linear, background-color 5s linear`;
+    timerProgressBar.style.transition = `width ${limit}s linear, background-color 5s linear`;
     timerProgressBar.style.width = '0%';
     timerProgressBar.style.backgroundColor = 'var(--timer-end-color)';
 
-    let timeLeft = QUESTION_TIME_LIMIT;
+    let timeLeft = limit;
     questionTimerText.textContent = timeLeft;
     questionTimerInterval = setInterval(() => {
         timeLeft--;
