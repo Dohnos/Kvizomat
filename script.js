@@ -13,7 +13,7 @@ const db = firebase.database();
 
 let currentQuestion = null;
 let currentUser = { name: null, pin: null, id: null, score: 0, streak: 0, lastAnswerDate: null, lastStreakDate: null, lastAnswerCorrect: null };
-const quizStartDate = new Date('2026-02-01T00:00:00');
+const quizStartDate = new Date('2026-03-01T00:00:00');
 let allQuestionsFromDB = [];
 const QUESTION_TIME_LIMIT = 30;
 let questionTimerInterval = null;
